@@ -10,6 +10,13 @@ application-local.properties
 .env
 *.env
 
+### Eclipse ###
+.metadata/
+/java/
+garden.txt
+개발일지.md
+새\ 텍스트\ 문서.txt
+
 ### STS ###
 .apt_generated
 .classpath

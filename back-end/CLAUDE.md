@@ -25,8 +25,9 @@ mvnw clean compile
 
 ## Lombok 주의사항
 
-Eclipse에서 `@RequiredArgsConstructor`가 제대로 처리되지 않아 `final` 필드 초기화 오류가 발생한다.
-**생성자 주입은 `@RequiredArgsConstructor` 대신 직접 생성자를 작성한다.**
+Eclipse에서 `@RequiredArgsConstructor`와 `@Slf4j`가 제대로 처리되지 않는다.
+- **생성자 주입은 직접 생성자를 작성한다.**
+- **로거는 `@Slf4j` 대신 `private static final Logger log = LoggerFactory.getLogger(XXX.class);` 를 사용한다.**
 
 ```java
 // 사용 금지
