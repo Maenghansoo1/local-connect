@@ -1,9 +1,6 @@
 package com.local.connect.event;
 
-import lombok.Getter;
-
 // 축제 조회 시 클라이언트에 반환하는 데이터
-@Getter
 public class EventResponse {
 
     private final Long id;
@@ -33,6 +30,19 @@ public class EventResponse {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    // Getter 메서드들
+    public Long getId() { return id; }
+    public String getContentId() { return contentId; }
+    public String getTitle() { return title; }
+    public String getStartDate() { return startDate; }
+    public String getEndDate() { return endDate; }
+    public String getAddress() { return address; }
+    public String getRegion() { return region; }
+    public String getImageUrl() { return imageUrl; }
+    public String getTel() { return tel; }
+    public Double getLatitude() { return latitude; }
+    public Double getLongitude() { return longitude; }
 
     public static EventResponse from(Event e) {
         return new EventResponse(

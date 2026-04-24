@@ -1,14 +1,12 @@
 package com.local.connect.event;
 
 import jakarta.persistence.*;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 // DB의 event 테이블과 연결되는 클래스
 @Entity
-@Getter
 @NoArgsConstructor
 @Table(name = "event")
 public class Event {
@@ -36,6 +34,20 @@ public class Event {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    // Getter 메서드들
+    public Long getId() { return id; }
+    public String getContentId() { return contentId; }
+    public String getTitle() { return title; }
+    public String getStartDate() { return startDate; }
+    public String getEndDate() { return endDate; }
+    public String getAddress() { return address; }
+    public String getRegion() { return region; }
+    public String getImageUrl() { return imageUrl; }
+    public String getTel() { return tel; }
+    public Double getLatitude() { return latitude; }
+    public Double getLongitude() { return longitude; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public static Event create(String contentId, String title, String startDate, String endDate,
                                String address, String region, String imageUrl, String tel,

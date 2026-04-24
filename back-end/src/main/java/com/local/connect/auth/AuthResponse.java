@@ -1,9 +1,6 @@
 package com.local.connect.auth;
 
-import lombok.Getter;
-
 // 로그인/회원가입 성공 시 반환하는 데이터
-@Getter
 public class AuthResponse {
 
     private final String token;    // JWT 토큰
@@ -15,4 +12,9 @@ public class AuthResponse {
         this.email = email;
         this.nickname = nickname;
     }
+
+    // Getter 메서드들
+    public String getToken() { return token; }
+    public String getEmail() { return email; }
+    public String getNickname() { return nickname; }
 }

@@ -2,7 +2,8 @@ package com.local.connect.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 // 한국관광공사 공공API 호출
-@Slf4j
 @Component
 public class TourApiClient {
 
-    private static final String BASE_URL = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
+    private static final Logger log = LoggerFactory.getLogger(TourApiClient.class);
+
+    private static final String BASE_URL = "https://apis.data.go.kr/B551011/KorService2/searchFestival2";
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
@@ -30,23 +32,25 @@ public class TourApiClient {
 
     // 지역 코드와 시작일 기준으로 축제 목록 가져오기
     public List<EventItem> fetchFestivals(String areaCode, String eventStartDate) {
+        String url = BASE_URL
+                + "?serviceKey=" + apiKey
+                + "&numOfRows=100&pageNo=1"
+                + "&MobileOS=ETC&MobileApp=LocalConnect"
+                + "&_type=json&arrange=A"
+                + "&areaCode=" + areaCode
+                + "&eventStartDate=" + eventStartDate;
+        log.info("TourAPI 호출: {}", url.replace(apiKey, apiKey.substring(0, 8) + "..."));
         try {
-            String url = BASE_URL
-                    + "?serviceKey=" + apiKey
-                    + "&numOfRows=100&pageNo=1"
-                    + "&MobileOS=ETC&MobileApp=LocalConnect"
-                    + "&_type=json&listYN=Y&arrange=A"
-                    + "&areaCode=" + areaCode
-                    + "&eventStartDate=" + eventStartDate;
-
             String response = restClient.get()
                     .uri(URI.create(url))
                     .retrieve()
                     .body(String.class);
 
+            log.info("TourAPI 응답 (areaCode={}): {}", areaCode,
+                    response != null && response.length() > 200 ? response.substring(0, 200) : response);
             return parseItems(response);
         } catch (Exception e) {
-            log.error("TourAPI 호출 실패 - areaCode: {}", areaCode, e);
+            log.error("TourAPI 호출 실패 - areaCode: {}, 오류: {}", areaCode, e.getMessage());
             return List.of();
         }
     }

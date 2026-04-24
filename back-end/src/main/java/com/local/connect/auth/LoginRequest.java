@@ -2,10 +2,8 @@ package com.local.connect.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
 
 // 로그인 요청 데이터
-@Getter
 public class LoginRequest {
 
     @Email(message = "올바른 이메일 형식이 아닙니다.")
@@ -14,4 +12,8 @@ public class LoginRequest {
 
     @NotBlank(message = "비밀번호는 필수입니다.")
     private String password;
+
+    // Getter 메서드들
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
 }
