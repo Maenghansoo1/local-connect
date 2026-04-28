@@ -40,4 +40,16 @@ public class VisitHistoryService {
         if (user == null) throw new IllegalArgumentException("사용자 없음");
         return visitHistoryRepository.findByUserIdOrderByVisitedAtDesc(user.getId());
     }
+
+    public void delete(String username, Long id) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new IllegalArgumentException("사용자 없음");
+
+        VisitHistory history = visitHistoryRepository.findById(id);
+        if (history == null) throw new IllegalArgumentException("방문 기록 없음");
+        if (!history.getUserId().equals(user.getId())) {
+            throw new IllegalArgumentException("삭제 권한 없음");
+        }
+        visitHistoryRepository.deleteById(id);
+    }
 }

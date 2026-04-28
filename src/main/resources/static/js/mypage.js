@@ -60,6 +60,12 @@ function loadVisitHistory() {
                     <p>${v.addr || '주소 없음'}</p>
                     <p style="color:#aaa;font-size:11px;">${v.visitedAt?.substring(0, 10)}</p>
                 </div>
+                <button class="my-card-del" onclick="deleteVisitHistory(${v.id}, this.closest('.my-card'))">×</button>
             </div>`).join('');
     });
+}
+
+function deleteVisitHistory(id, el) {
+    if (!confirm('방문 기록을 삭제할까요?')) return;
+    fetch(`/api/visits/${id}`, { method: 'DELETE' }).then(() => el.remove());
 }

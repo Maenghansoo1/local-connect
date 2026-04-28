@@ -27,4 +27,10 @@ public class VisitHistoryController {
     public ResponseEntity<?> getList(Authentication authentication) {
         return ResponseEntity.ok(visitHistoryService.getList(authentication.getName()));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id, Authentication authentication) {
+        visitHistoryService.delete(authentication.getName(), id);
+        return ResponseEntity.ok(Map.of("message", "방문 기록이 삭제되었습니다."));
+    }
 }
