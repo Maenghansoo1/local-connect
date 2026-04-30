@@ -9,6 +9,11 @@ function updateStars(val) {
     });
 }
 
+function updateReviewCharCount() {
+    const len = document.getElementById('review-content').value.length;
+    document.getElementById('review-char-count').textContent = `${len}/1000`;
+}
+
 function loadReviews(contentId) {
     const listEl = document.getElementById('review-list');
     listEl.innerHTML = '<p style="color:#aaa;font-size:13px;">불러오는 중...</p>';
@@ -63,6 +68,7 @@ function submitReview() {
         msgEl.className = 'form-msg success';
         msgEl.textContent = d.message;
         document.getElementById('review-content').value = '';
+        updateReviewCharCount();
         selectedRating = 0;
         updateStars(0);
         loadReviews(currentSpot.contentid);

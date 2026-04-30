@@ -226,7 +226,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <textarea id="review-content" placeholder="이 장소에 대한 솔직한 리뷰를 남겨주세요."></textarea>
+                <textarea id="review-content" maxlength="1000" placeholder="이 장소에 대한 솔직한 리뷰를 남겨주세요." oninput="updateReviewCharCount()"></textarea>
+                <p class="char-count" id="review-char-count">0/1000</p>
             </div>
             <button class="form-submit" onclick="submitReview()">리뷰 등록</button>
             <p class="form-msg" id="review-msg"></p>

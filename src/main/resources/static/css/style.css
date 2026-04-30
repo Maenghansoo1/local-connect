@@ -719,6 +719,12 @@ body {
     box-shadow: 0 0 0 4px rgba(201,168,106,0.16);
 }
 .form-group textarea { resize: vertical; min-height: 88px; }
+.char-count {
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
 .form-submit {
     width: 100%;
     padding: 13px;
