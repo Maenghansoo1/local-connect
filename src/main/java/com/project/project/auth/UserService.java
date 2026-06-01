@@ -1,8 +1,5 @@
-package com.project.project.service;
+package com.project.project.auth;
 
-import com.project.project.dto.SignupDto;
-import com.project.project.entity.User;
-import com.project.project.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +19,6 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // 회원가입
     public void signup(SignupDto dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
@@ -30,27 +26,21 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         }
-
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setNickname(dto.getNickname());
         user.setEmail(dto.getEmail());
         user.setProvider("local");
-
         userRepository.save(user);
     }
 
-    // Spring Security 로그인 처리
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 아이디입니다."));
-
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                new ArrayList<>()
+                user.getUsername(), user.getPassword(), new ArrayList<>()
         );
     }
 }

@@ -1,6 +1,5 @@
-package com.project.project.repository;
+package com.project.project.favorite;
 
-import com.project.project.entity.Favorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

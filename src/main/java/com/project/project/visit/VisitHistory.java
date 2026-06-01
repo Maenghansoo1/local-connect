@@ -1,5 +1,6 @@
-package com.project.project.entity;
+package com.project.project.visit;
 
+import com.project.project.auth.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,13 +17,13 @@ public class VisitHistory {
     private User user;
 
     @Column(nullable = false)
-    private String contentId;   // 관광지 고유 ID
+    private String contentId;
 
     @Column(nullable = false)
-    private String title;       // 관광지 이름
+    private String title;
 
-    private String addr;        // 주소
-    private String image;       // 이미지 URL
+    private String addr;
+    private String image;
 
     @Column(updatable = false)
     private LocalDateTime visitedAt;
@@ -30,7 +31,6 @@ public class VisitHistory {
     @PrePersist
     public void prePersist() { this.visitedAt = LocalDateTime.now(); }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }

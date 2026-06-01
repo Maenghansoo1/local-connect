@@ -1,10 +1,6 @@
-package com.project.project.controller;
+package com.project.project.tour;
 
-import com.project.project.service.TourService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -22,5 +18,13 @@ public class TourController {
             @RequestParam(defaultValue = "12") String contentTypeId,
             @RequestParam(defaultValue = "ko") String lang) {
         return tourService.getSpots(areaCode, contentTypeId, lang);
+    }
+
+    @GetMapping("/spots/detail")
+    public String getDetailIntro(
+            @RequestParam String contentId,
+            @RequestParam(defaultValue = "12") String contentTypeId,
+            @RequestParam(defaultValue = "ko") String lang) {
+        return tourService.getDetailIntro(contentId, contentTypeId, lang);
     }
 }

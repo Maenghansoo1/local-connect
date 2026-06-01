@@ -1,5 +1,6 @@
-package com.project.project.entity;
+package com.project.project.review;
 
+import com.project.project.auth.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,16 +17,16 @@ public class Review {
     private User user;
 
     @Column(nullable = false)
-    private String contentId;   // 관광지 고유 ID
+    private String contentId;
 
     @Column(nullable = false)
-    private String spotTitle;   // 관광지 이름
+    private String spotTitle;
 
     @Column(nullable = false, length = 1000)
-    private String content;     // 리뷰 내용
+    private String content;
 
     @Column(nullable = false)
-    private int rating;         // 별점 (1~5)
+    private int rating;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -33,7 +34,6 @@ public class Review {
     @PrePersist
     public void prePersist() { this.createdAt = LocalDateTime.now(); }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }

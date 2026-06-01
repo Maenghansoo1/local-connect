@@ -1,9 +1,7 @@
-package com.project.project.service;
+package com.project.project.favorite;
 
-import com.project.project.entity.Favorite;
-import com.project.project.entity.User;
-import com.project.project.repository.FavoriteRepository;
-import com.project.project.repository.UserRepository;
+import com.project.project.auth.User;
+import com.project.project.auth.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +19,10 @@ public class FavoriteService {
         this.userRepository = userRepository;
     }
 
-    // 즐겨찾기 추가/취소 토글
     @Transactional
     public Map<String, Object> toggle(String username, Map<String, String> spotData) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
         String contentId = spotData.get("contentId");
 
         if (favoriteRepository.existsByUserIdAndContentId(user.getId(), contentId)) {
@@ -47,14 +43,12 @@ public class FavoriteService {
         }
     }
 
-    // 즐겨찾기 목록 조회
     public List<Favorite> getList(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
         return favoriteRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
     }
 
-    // 즐겨찾기 여부 확인
     public boolean isFavorite(String username, String contentId) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));

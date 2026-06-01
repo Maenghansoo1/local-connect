@@ -1,6 +1,5 @@
-package com.project.project.repository;
+package com.project.project.review;
 
-import com.project.project.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

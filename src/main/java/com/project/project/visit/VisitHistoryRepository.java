@@ -1,6 +1,5 @@
-package com.project.project.repository;
+package com.project.project.visit;
 
-import com.project.project.entity.VisitHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.project.project.dto;
+package com.project.project.auth;
 
 public class SignupDto {
     private String username;

@@ -1,9 +1,7 @@
-package com.project.project.service;
+package com.project.project.review;
 
-import com.project.project.entity.Review;
-import com.project.project.entity.User;
-import com.project.project.repository.ReviewRepository;
-import com.project.project.repository.UserRepository;
+import com.project.project.auth.User;
+import com.project.project.auth.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +18,9 @@ public class ReviewService {
         this.userRepository = userRepository;
     }
 
-    // 리뷰 저장
     public void save(String username, Map<String, String> data) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
         Review review = new Review();
         review.setUser(user);
         review.setContentId(data.get("contentId"));
@@ -34,19 +30,16 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    // 특정 관광지 리뷰 목록
     public List<Review> getBySpot(String contentId) {
         return reviewRepository.findByContentIdOrderByCreatedAtDesc(contentId);
     }
 
-    // 내 리뷰 목록
     public List<Review> getMyReviews(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
         return reviewRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
     }
 
-    // 리뷰 삭제
     public void delete(String username, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("리뷰 없음"));

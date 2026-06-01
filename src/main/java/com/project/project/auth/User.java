@@ -1,4 +1,4 @@
-package com.project.project.entity;
+package com.project.project.auth;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -12,22 +12,22 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;       // 아이디
+    private String username;
 
     @Column(nullable = false)
-    private String password;       // 암호화된 비밀번호
+    private String password;
 
     @Column(nullable = false)
-    private String nickname;       // 닉네임
+    private String nickname;
 
     @Column(unique = true)
-    private String email;          // 이메일
+    private String email;
 
     @Column
-    private String provider;       // 로그인 방식: local, kakao, google
+    private String provider;
 
     @Column
-    private String providerId;     // 소셜 로그인 고유 ID
+    private String providerId;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -37,7 +37,6 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

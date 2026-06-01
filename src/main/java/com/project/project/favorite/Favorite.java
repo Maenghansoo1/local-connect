@@ -1,5 +1,6 @@
-package com.project.project.entity;
+package com.project.project.favorite;
 
+import com.project.project.auth.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,16 +17,16 @@ public class Favorite {
     private User user;
 
     @Column(nullable = false)
-    private String contentId;      // 관광지 고유 ID
+    private String contentId;
 
     @Column(nullable = false)
-    private String title;          // 관광지 이름
+    private String title;
 
-    private String addr;           // 주소
-    private String image;          // 이미지 URL
-    private String contentTypeId;  // 카테고리
-    private String mapx;           // 경도
-    private String mapy;           // 위도
+    private String addr;
+    private String image;
+    private String contentTypeId;
+    private String mapx;
+    private String mapy;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -33,7 +34,6 @@ public class Favorite {
     @PrePersist
     public void prePersist() { this.createdAt = LocalDateTime.now(); }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }

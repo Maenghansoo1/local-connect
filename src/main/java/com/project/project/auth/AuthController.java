@@ -1,7 +1,5 @@
-package com.project.project.controller;
+package com.project.project.auth;
 
-import com.project.project.dto.SignupDto;
-import com.project.project.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupDto dto) {
         try {
@@ -29,7 +26,6 @@ public class AuthController {
         }
     }
 
-    // 로그인 상태 확인
     @GetMapping("/me")
     public ResponseEntity<?> me(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
