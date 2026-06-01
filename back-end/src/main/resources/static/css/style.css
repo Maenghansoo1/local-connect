@@ -1,0 +1,20 @@
+/* 축제 카드 hover 효과 */
+.festival-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.festival-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* 날짜 선택 달력 — 선택 불가 날짜 (축제 기간 외) 회색 처리 */
+.day-unavailable {
+  background-color: #e9ecef !important;
+}
+
+/* 날짜 선택 달력 — 드래그로 선택된 날짜 연한 녹색 */
+.fc-highlight {
+  background-color: rgba(144, 238, 144, 0.5) !important;
+}

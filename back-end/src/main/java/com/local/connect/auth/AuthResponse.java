@@ -1,20 +1,16 @@
 package com.local.connect.auth;
 
-// 로그인/회원가입 성공 시 반환하는 데이터
+// 로그인/회원가입 성공 시 반환하는 데이터 (세션 방식으로 변경 — 토큰 없음)
 public class AuthResponse {
 
-    private final String token;    // JWT 토큰
     private final String email;
     private final String nickname;
 
-    public AuthResponse(String token, String email, String nickname) {
-        this.token = token;
+    public AuthResponse(String email, String nickname) {
         this.email = email;
         this.nickname = nickname;
     }
 
-    // Getter 메서드들
-    public String getToken() { return token; }
     public String getEmail() { return email; }
     public String getNickname() { return nickname; }
 }

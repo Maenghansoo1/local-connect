@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Tech Stack
 
-- **Java 21**, **Spring Boot 4.0.5** (Spring Framework 7)
+- **Java 21**, **Spring Boot 3.3.6** (Spring Framework 6)
 - **Spring Data JPA** + **Hibernate** — DDL auto: `update`, SQL 로그 활성화
 - **MariaDB 12.2** — `local-connect` 데이터베이스, localhost:3306
 - **Lombok** — 단, Eclipse에서 Lombok 어노테이션 처리가 불안정하므로 주의 (아래 참고)
@@ -12,16 +12,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 실행 방법
 
-**Eclipse에서 실행한다** (필수).
+**터미널에서 실행 (VS Code 환경)**
 
-- `LocalConnectApplication.java` 우클릭 → `Run As` → `Spring Boot App`
-- `./mvnw spring-boot:run`은 사용하지 않는다. Eclipse가 컴파일한 `.class` 파일과 Maven 빌드가 충돌해 `Unresolved compilation problem` 오류가 발생한다.
+```bash
+JAVA_HOME="C:/Program Files/Java/jdk-22" ./mvnw spring-boot:run
+```
 
-컴파일 확인이 필요할 때만 터미널에서 사용:
-```
-set JAVA_HOME=C:\Program Files\Java\jdk-21.0.10
-mvnw clean compile
-```
+- 시스템에 Java 21이 없고 **jdk-22**, jdk-23이 설치되어 있음 (`C:/Program Files/Java/`)
+- Java 25가 기본 PATH에 잡혀 있으나 Lombok과 충돌 — 반드시 JAVA_HOME으로 jdk-22 지정
+- `./mvnw spring-boot:run` 단독 실행 시 Java 25로 실행되어 빌드 실패함
+- 코드 변경 후 처음 실행할 때는 `clean` 추가: `JAVA_HOME="C:/Program Files/Java/jdk-22" ./mvnw clean spring-boot:run`
 
 ## Lombok 주의사항
 

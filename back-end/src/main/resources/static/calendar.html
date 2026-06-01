@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 일정 — Korea Festivals</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <nav class="navbar navbar-dark bg-dark py-3">
+    <div class="container">
+      <div class="d-flex align-items-center gap-3">
+        <a href="/" class="navbar-brand fw-bold fs-4 text-decoration-none">🎉 Korea Festivals</a>
+        <a href="/calendar.html" class="text-light text-decoration-none">📅 내 일정</a>
+      </div>
+      <div id="auth-area">
+        <!-- JS로 로그인 상태에 따라 채워짐 -->
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h4 class="mb-4">📅 내 축제 일정</h4>
+
+    <!-- 로그인 안 됐을 때 메시지 -->
+    <div id="login-required" style="display:none">
+      <div class="alert alert-warning">
+        일정을 보려면 <a href="/">로그인</a>이 필요합니다.
+        로그인 후 축제 카드에서 "일정 저장" 버튼을 눌러 일정을 추가하세요.
+      </div>
+    </div>
+
+    <!-- 달력 -->
+    <div id="calendar-wrapper">
+      <div id="calendar"></div>
+    </div>
+
+    <!-- 저장된 일정 목록 -->
+    <h5 class="mt-5 mb-3">저장된 일정 목록</h5>
+    <div id="schedule-list"></div>
+
+  </div>
+
+  <footer class="text-center text-muted py-4 mt-5 border-top">
+    데이터 제공: <strong>한국관광공사</strong>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="/js/calendar.js"></script>
+
+</body>
+</html>

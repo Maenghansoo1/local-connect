@@ -11,4 +11,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Optional<Event> findByContentId(String contentId);
     Page<Event> findByRegionContaining(String region, Pageable pageable);
     Page<Event> findByTitleContaining(String keyword, Pageable pageable);
+    // 영문 API는 contentId가 달라서 위도+경도로 같은 축제를 찾음
+    Optional<Event> findFirstByLatitudeAndLongitude(Double latitude, Double longitude);
 }

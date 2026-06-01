@@ -21,25 +21,38 @@ public class EventController {
     // GET /api/events              → 전체 목록
     // GET /api/events?region=서울  → 지역 필터
     // GET /api/events?keyword=벚꽃 → 키워드 검색
+    // GET /api/events?lang=en      → 영문 목록
     @GetMapping
     public ResponseEntity<Page<EventResponse>> getEvents(
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false, defaultValue = "ko") String lang,
             @PageableDefault(size = 20, sort = "startDate", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return ResponseEntity.ok(eventService.getEvents(region, keyword, pageable));
+        return ResponseEntity.ok(eventService.getEvents(region, keyword, lang, pageable));
     }
 
-    // GET /api/events/1  → 상세 조회
+    // GET /api/events/1        → 상세 조회 (한국어)
+    // GET /api/events/1?lang=en → 상세 조회 (영어)
     @GetMapping("/{id}")
-    public ResponseEntity<EventResponse> getEvent(@PathVariable Long id) {
-        return ResponseEntity.ok(eventService.getEvent(id));
+    public ResponseEntity<EventResponse> getEvent(
+            @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "ko") String lang
+    ) {
+        return ResponseEntity.ok(eventService.getEvent(id, lang));
     }
 
-    // POST /api/events/sync  → 공공API에서 데이터 가져오기
+    // POST /api/events/sync     → 한국어 데이터 동기화
     @PostMapping("/sync")
     public ResponseEntity<Void> sync() {
         eventService.syncAll();
+        return ResponseEntity.ok().build();
+    }
+
+    // POST /api/events/sync/en  → 영문 번역 데이터 동기화
+    @PostMapping("/sync/en")
+    public ResponseEntity<Void> syncEnglish() {
+        eventService.syncEnglish();
         return ResponseEntity.ok().build();
     }
 }

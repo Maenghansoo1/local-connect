@@ -17,7 +17,15 @@ public class EventSyncJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
         log.info("배치 시작 - 공공API 데이터 동기화");
+
+        // 한국어 축제 데이터 동기화
         eventService.syncAll();
+        log.info("한국어 동기화 완료");
+
+        // 영문 번역 데이터 동기화 (한국어 동기화 이후 실행)
+        eventService.syncEnglish();
+        log.info("영문 동기화 완료");
+
         log.info("배치 완료");
     }
 }
