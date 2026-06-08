@@ -2,61 +2,73 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>한국 관광 가이드</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .event-info-box { background: #fffbf0; border: 1px solid #f0d98a; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; line-height: 2; color: #444; }
-        .event-info-box p { margin: 0; }
-    </style>
 </head>
 <body>
 
 <!-- ===== 네비게이션 ===== -->
 <nav class="navbar">
-    <h1 id="nav-title">🗺️ 한국 관광 가이드</h1>
-    <div style="display:flex;gap:10px;align-items:center;">
-        <button class="nav-btn btn-lang active" id="btn-ko" onclick="setLang('ko')">🇰🇷 한국어</button>
-        <button class="nav-btn btn-lang" id="btn-en" onclick="setLang('en')">🇺🇸 English</button>
+    <div class="navbar-logo">
+        🗺️ <span id="nav-title">한국 관광 가이드</span>
+    </div>
+    <div class="navbar-center">
+        <button class="btn-lang active" id="btn-ko" onclick="setLang('ko')">🇰🇷 한국어</button>
+        <button class="btn-lang" id="btn-en" onclick="setLang('en')">🇺🇸 English</button>
     </div>
     <div class="nav-buttons" id="nav-buttons"></div>
 </nav>
 
 <!-- ===== 메인 콘텐츠 ===== -->
 <div class="main-content">
-    <p class="section-title" id="section-category">카테고리</p>
-    <div class="category-buttons">
-        <button class="category-btn active" onclick="selectCategory('12', this)">🏞️ 관광지</button>
-        <button class="category-btn" onclick="selectCategory('14', this)">🏛️ 문화시설</button>
-        <button class="category-btn" onclick="selectCategory('15', this)">🎉 축제</button>
-        <button class="category-btn" onclick="selectCategory('28', this)">🏄 레포츠</button>
-        <button class="category-btn" onclick="selectCategory('32', this)">🏨 숙박</button>
-        <button class="category-btn" onclick="selectCategory('38', this)">🛍️ 쇼핑</button>
-        <button class="category-btn" onclick="selectCategory('39', this)">🍽️ 음식점</button>
+
+    <!-- 카테고리 필터 -->
+    <div class="filter-section">
+        <div class="section-label" id="section-category">카테고리</div>
+        <div class="filter-row">
+            <button class="category-btn active" onclick="selectCategory('12', this)">🏞️ 관광지</button>
+            <button class="category-btn" onclick="selectCategory('14', this)">🏛️ 문화시설</button>
+            <button class="category-btn" onclick="selectCategory('15', this)">🎉 축제</button>
+            <button class="category-btn" onclick="selectCategory('28', this)">🏄 레포츠</button>
+            <button class="category-btn" onclick="selectCategory('32', this)">🏨 숙박</button>
+            <button class="category-btn" onclick="selectCategory('38', this)">🛍️ 쇼핑</button>
+            <button class="category-btn" onclick="selectCategory('39', this)">🍽️ 음식점</button>
+        </div>
     </div>
-    <p class="section-title" id="section-region">지역</p>
-    <div class="region-buttons">
-        <button class="region-btn" data-code="1"  onclick="selectRegion('1',  37.5665, 126.9780, this)">서울</button>
-        <button class="region-btn" data-code="2"  onclick="selectRegion('2',  37.4563, 126.7052, this)">인천</button>
-        <button class="region-btn" data-code="31" onclick="selectRegion('31', 37.4138, 127.5183, this)">경기</button>
-        <button class="region-btn" data-code="32" onclick="selectRegion('32', 37.8228, 128.1555, this)">강원</button>
-        <button class="region-btn" data-code="33" onclick="selectRegion('33', 36.8000, 127.7000, this)">충북</button>
-        <button class="region-btn" data-code="34" onclick="selectRegion('34', 36.5184, 126.8000, this)">충남</button>
-        <button class="region-btn" data-code="3"  onclick="selectRegion('3',  36.3504, 127.3845, this)">대전</button>
-        <button class="region-btn" data-code="8"  onclick="selectRegion('8',  36.4800, 127.2890, this)">세종</button>
-        <button class="region-btn" data-code="37" onclick="selectRegion('37', 35.7175, 127.1530, this)">전북</button>
-        <button class="region-btn" data-code="38" onclick="selectRegion('38', 34.8679, 126.9910, this)">전남</button>
-        <button class="region-btn" data-code="5"  onclick="selectRegion('5',  35.1595, 126.8526, this)">광주</button>
-        <button class="region-btn" data-code="35" onclick="selectRegion('35', 36.4919, 128.8889, this)">경북</button>
-        <button class="region-btn" data-code="36" onclick="selectRegion('36', 35.4606, 128.2132, this)">경남</button>
-        <button class="region-btn" data-code="4"  onclick="selectRegion('4',  35.8714, 128.6014, this)">대구</button>
-        <button class="region-btn" data-code="6"  onclick="selectRegion('6',  35.1796, 129.0756, this)">부산</button>
-        <button class="region-btn" data-code="7"  onclick="selectRegion('7',  35.5384, 129.3114, this)">울산</button>
-        <button class="region-btn" data-code="39" onclick="selectRegion('39', 33.4996, 126.5312, this)">제주</button>
+
+    <!-- 지역 필터 -->
+    <div class="filter-section">
+        <div class="section-label" id="section-region">지역</div>
+        <div class="filter-row">
+            <button class="region-btn" data-code="1"  onclick="selectRegion('1',  37.5665, 126.9780, this)">서울</button>
+            <button class="region-btn" data-code="2"  onclick="selectRegion('2',  37.4563, 126.7052, this)">인천</button>
+            <button class="region-btn" data-code="31" onclick="selectRegion('31', 37.4138, 127.5183, this)">경기</button>
+            <button class="region-btn" data-code="32" onclick="selectRegion('32', 37.8228, 128.1555, this)">강원</button>
+            <button class="region-btn" data-code="33" onclick="selectRegion('33', 36.8000, 127.7000, this)">충북</button>
+            <button class="region-btn" data-code="34" onclick="selectRegion('34', 36.5184, 126.8000, this)">충남</button>
+            <button class="region-btn" data-code="3"  onclick="selectRegion('3',  36.3504, 127.3845, this)">대전</button>
+            <button class="region-btn" data-code="8"  onclick="selectRegion('8',  36.4800, 127.2890, this)">세종</button>
+            <button class="region-btn" data-code="37" onclick="selectRegion('37', 35.7175, 127.1530, this)">전북</button>
+            <button class="region-btn" data-code="38" onclick="selectRegion('38', 34.8679, 126.9910, this)">전남</button>
+            <button class="region-btn" data-code="5"  onclick="selectRegion('5',  35.1595, 126.8526, this)">광주</button>
+            <button class="region-btn" data-code="35" onclick="selectRegion('35', 36.4919, 128.8889, this)">경북</button>
+            <button class="region-btn" data-code="36" onclick="selectRegion('36', 35.4606, 128.2132, this)">경남</button>
+            <button class="region-btn" data-code="4"  onclick="selectRegion('4',  35.8714, 128.6014, this)">대구</button>
+            <button class="region-btn" data-code="6"  onclick="selectRegion('6',  35.1796, 129.0756, this)">부산</button>
+            <button class="region-btn" data-code="7"  onclick="selectRegion('7',  35.5384, 129.3114, this)">울산</button>
+            <button class="region-btn" data-code="39" onclick="selectRegion('39', 33.4996, 126.5312, this)">제주</button>
+        </div>
     </div>
+
+    <!-- 지도 + 목록 -->
     <div class="container">
         <div id="map"></div>
-        <div id="spot-list" class="spot-list">
-            <p class="empty-msg">카테고리와 지역을 선택하세요.</p>
+        <div class="list-area">
+            <div id="spot-list" class="spot-list">
+                <p class="empty-msg">카테고리와 지역을 선택하세요.</p>
+            </div>
+            <div id="pagination" class="pagination"></div>
         </div>
     </div>
 </div>
@@ -68,11 +80,11 @@
         <h2>로그인</h2>
         <div class="form-group">
             <label>아이디</label>
-            <input type="text" id="login-username" placeholder="아이디">
+            <input type="text" id="login-username" placeholder="아이디를 입력하세요">
         </div>
         <div class="form-group">
             <label>비밀번호</label>
-            <input type="password" id="login-password" placeholder="비밀번호"
+            <input type="password" id="login-password" placeholder="비밀번호를 입력하세요"
                    onkeydown="if(event.key==='Enter') submitLogin()">
         </div>
         <button class="form-submit" onclick="submitLogin()">로그인</button>
@@ -86,10 +98,10 @@
     <div class="modal">
         <button class="modal-close" onclick="closeModal('signup-modal')">✕</button>
         <h2>회원가입</h2>
-        <div class="form-group"><label>아이디</label><input type="text" id="signup-username" placeholder="아이디"></div>
-        <div class="form-group"><label>비밀번호</label><input type="password" id="signup-password" placeholder="비밀번호"></div>
+        <div class="form-group"><label>아이디</label><input type="text" id="signup-username" placeholder="사용할 아이디"></div>
+        <div class="form-group"><label>비밀번호</label><input type="password" id="signup-password" placeholder="비밀번호 (6자 이상)"></div>
         <div class="form-group"><label>닉네임</label><input type="text" id="signup-nickname" placeholder="닉네임"></div>
-        <div class="form-group"><label>이메일</label><input type="email" id="signup-email" placeholder="이메일"></div>
+        <div class="form-group"><label>이메일</label><input type="email" id="signup-email" placeholder="이메일 주소"></div>
         <button class="form-submit" onclick="submitSignup()">회원가입</button>
         <p class="form-msg" id="signup-msg"></p>
         <p class="form-switch">이미 계정이 있으신가요? <a onclick="switchModal('signup-modal','login-modal')">로그인</a></p>
@@ -101,10 +113,20 @@
     <div class="modal wide">
         <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
         <h2 id="detail-title"></h2>
-        <img id="detail-img" src="" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;">
-        <p id="detail-addr" style="color:#888;font-size:13px;margin-bottom:8px;"></p>
-        <button class="card-btn btn-navi" style="width:100%;padding:10px;font-size:14px;margin-bottom:16px;"
-                onclick="openNaviFromDetail()">🚗 카카오맵 길찾기</button>
+        <img id="detail-img" src=""
+             style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:14px;display:block;">
+        <p id="detail-addr"
+           style="font-size:13px;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;gap:6px;">
+        </p>
+        <button class="detail-navi-btn" onclick="openNaviFromDetail()">🚗 카카오맵 길찾기</button>
+
+        <!-- 일정에 추가 버튼 -->
+        <div style="margin-bottom:16px;">
+            <button class="detail-sch-btn" onclick="openAddToSchedule()">📅 일정에 추가</button>
+            <div id="add-to-sch-panel" style="display:none; margin-top:10px;">
+                <div id="sch-select-list"></div>
+            </div>
+        </div>
 
         <!-- 소개글 + 홈페이지 (detail-info.js 에서 채워줌) -->
         <div id="detail-common-info" style="display:none;"></div>
@@ -112,13 +134,11 @@
         <!-- 축제 상세 정보 (축제 카테고리 선택 시 표시) -->
         <div id="detail-event-info" style="display:none;"></div>
 
-        <!-- 리뷰 목록 -->
-        <h3 style="font-size:15px;margin-bottom:10px;">💬 리뷰</h3>
+        <p class="detail-section-title">💬 리뷰</p>
         <div id="review-list"></div>
 
-        <!-- 리뷰 작성 (로그인 시) -->
         <div id="review-form-wrap">
-            <h3 style="font-size:15px;margin:16px 0 10px;">✏️ 리뷰 작성</h3>
+            <p class="detail-section-title" style="margin-top:20px;">✏️ 리뷰 작성</p>
             <div class="form-group">
                 <label>별점</label>
                 <div class="star-select" id="star-select">
@@ -130,7 +150,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <textarea id="review-content" placeholder="리뷰를 작성해주세요."></textarea>
+                <textarea id="review-content" placeholder="이 장소에 대한 솔직한 리뷰를 남겨주세요."></textarea>
             </div>
             <button class="form-submit" onclick="submitReview()">리뷰 등록</button>
             <p class="form-msg" id="review-msg"></p>
@@ -154,8 +174,29 @@
     </div>
 </div>
 
+<!-- ===== 달력 모달 ===== -->
+<div class="modal-overlay" id="calendar-modal">
+    <div class="modal fullcal">
+        <button class="modal-close" onclick="closeModal('calendar-modal')">✕</button>
+        <h2>📅 내 여행 일정</h2>
+
+        <!-- 달력 + 사이드 패널 레이아웃 -->
+        <div class="cal-layout">
+
+            <!-- FullCalendar가 그려질 영역 -->
+            <div id="fc-calendar"></div>
+
+            <!-- 날짜 클릭 시 나타나는 사이드 패널 -->
+            <div class="cal-panel" id="cal-panel">
+                <p class="cal-panel-hint">← 날짜를 클릭하면<br>일정이 표시됩니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ===== 스크립트 ===== -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5f67f3a844e1fd36bf9c98082d434084"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/auth.js"></script>
@@ -164,6 +205,7 @@
 <script src="js/mypage.js"></script>
 <script src="js/detail-info.js"></script>
 <script src="js/spots.js"></script>
+<script src="js/calendar.js"></script>
 <script src="js/app.js"></script>
 
 </body>

@@ -6,6 +6,8 @@ let currentUser = null;
 let currentSpot = null;
 let selectedRating = 0;
 let currentLang = 'ko';
+let currentPage = 1;
+const PAGE_SIZE = 6;
 
 // ===== 카카오맵 초기화 =====
 map = new kakao.maps.Map(document.getElementById('map'), {

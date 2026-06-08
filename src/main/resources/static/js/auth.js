@@ -4,6 +4,7 @@ function updateNavbar(username) {
     const t = i18n[currentLang];
     nav.innerHTML = username
         ? `<span class="user-info">👤 ${username}</span>
+           <button class="nav-btn btn-calendar" onclick="openCalendar()">📅 달력</button>
            <button class="nav-btn btn-mypage" onclick="openMypage()">${t.mypage}</button>
            <button class="nav-btn btn-logout" onclick="logout()">${t.logout}</button>`
         : `<button class="nav-btn btn-login" onclick="openModal('login-modal')">${t.login}</button>

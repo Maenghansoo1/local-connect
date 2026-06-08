@@ -44,3 +44,25 @@ CREATE TABLE IF NOT EXISTS visit_history (
     visited_at DATETIME,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS schedules (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    travel_date DATE NOT NULL,
+    memo VARCHAR(500),
+    created_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS schedule_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    schedule_id BIGINT NOT NULL,
+    content_id VARCHAR(50),
+    title VARCHAR(200) NOT NULL,
+    addr VARCHAR(300),
+    visit_time VARCHAR(10),
+    item_order INT DEFAULT 0,
+    memo VARCHAR(500),
+    FOREIGN KEY (schedule_id) REFERENCES schedules(id)
+);
