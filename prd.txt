@@ -21,18 +21,20 @@
      → 그 다음 작업을 이어한다
      → 사용자에게 "이전 작업 내용을 파악했습니다" 라고 알린다
 
-  4. 팀원 코드 주의사항 (backend/ 폴더)
-     - @RequiredArgsConstructor, @Slf4j 등 Lombok 이미 사용 중 → 그대로 유지
-     - 단, 새 파일 추가 시에는 직접 생성자/Logger 작성
-     - H2 인메모리 DB 사용 (MariaDB 아님)
+  4. 코드 작성 주의사항
+     - 현재 프로젝트는 Lombok 사용 안 함 → getter/setter, 생성자 직접 작성
+     - DB 접근은 MyBatis(@Mapper + @Select/@Insert 등 어노테이션 SQL) 사용
+       (JPA 아님 — 팀원이 JPA에서 MyBatis로 전환함)
+     - 테이블은 schema.sql 로 자동 생성됨 (JPA ddl-auto 아님)
 
   5. 힌트 참고:
-     - mid-develop 브랜치에 이전 바닐라JS + MariaDB 버전 있음
+     - mid-develop 브랜치에 이전 Bootstrap + 축제DB 버전 있음
+       (구조가 완전히 달라서 직접 이식은 불가, UI/아이디어 참고용)
      - 영문 번역, 일정 저장, 세션 인증 등 참고 가능
 
 ================================================================
   Local Connect — 개발 진행 현황 및 계획
-  마지막 업데이트: 2026-06-01
+  마지막 업데이트: 2026-06-08
 ================================================================
 
 ----------------------------------------------------------------
@@ -68,14 +70,15 @@
   [백엔드]
   - Java 21, Spring Boot 3.5.14
   - Spring Security (세션 기반 로그인)
-  - Spring Data JPA (ORM, 객체로 DB 조작)
-  - MariaDB (로컬 DB)
+  - MyBatis (@Mapper 인터페이스에 SQL 직접 작성, JPA 아님)
+  - MariaDB (로컬 DB), 테이블은 schema.sql 로 자동 생성
   - spring-dotenv (.env 파일로 API 키·비밀번호 관리)
   - 한국관광공사 API (KorService2 한국어, EngService2 영어)
 
   [프론트엔드]
   - Vanilla JS (React 같은 프레임워크 없이 순수 JS)
   - Kakao Maps API (지도, 마커, 카카오 내비게이션)
+  - FullCalendar v6 (여행 일정 달력)
   - 한/영 i18n 지원 (i18n.js)
 
   [기타]
@@ -85,31 +88,41 @@
   프로젝트 폴더 구조
 ----------------------------------------------------------------
 
+  ※ Package by Feature 구조 — 기능별로 폴더를 나눔
+  ※ 각 Repository는 MyBatis @Mapper 인터페이스 (SQL 직접 작성)
+
   src/main/java/com/project/project/
   ├── auth/           ← 회원가입, 로그인, 유저 정보
   │   ├── User.java           (DB 테이블: users)
   │   ├── SignupDto.java       (회원가입 요청 데이터)
-  │   ├── UserRepository.java
+  │   ├── UserRepository.java  (@Mapper)
   │   ├── UserService.java
   │   └── AuthController.java
   ├── tour/           ← 한국관광공사 API 호출
-  │   ├── TourService.java
+  │   ├── TourService.java     (목록/상세/소개 API 호출)
   │   └── TourController.java
   ├── review/         ← 관광지 리뷰
   │   ├── Review.java          (DB 테이블: reviews)
-  │   ├── ReviewRepository.java
+  │   ├── ReviewRepository.java (@Mapper)
   │   ├── ReviewService.java
   │   └── ReviewController.java
   ├── favorite/       ← 즐겨찾기
   │   ├── Favorite.java        (DB 테이블: favorites)
-  │   ├── FavoriteRepository.java
+  │   ├── FavoriteRepository.java (@Mapper)
   │   ├── FavoriteService.java
   │   └── FavoriteController.java
   ├── visit/          ← 방문 기록
   │   ├── VisitHistory.java    (DB 테이블: visit_history)
-  │   ├── VisitHistoryRepository.java
+  │   ├── VisitHistoryRepository.java (@Mapper)
   │   ├── VisitHistoryService.java
   │   └── VisitHistoryController.java
+  ├── schedule/       ← 여행 일정 (달력 기능, 팀원 추가)
+  │   ├── Schedule.java        (DB 테이블: schedules, 일정 하나)
+  │   ├── ScheduleItem.java    (DB 테이블: schedule_items, 일정 안의 장소)
+  │   ├── ScheduleRepository.java     (@Mapper)
+  │   ├── ScheduleItemRepository.java (@Mapper)
+  │   ├── ScheduleService.java
+  │   └── ScheduleController.java
   ├── config/
   │   ├── SecurityConfig.java  (Spring Security 설정)
   │   └── AppConfig.java       (RestTemplate Bean 등록)
@@ -122,13 +135,17 @@
   │   └── js/
   │       ├── app.js           (전역 변수, 카카오맵 초기화)
   │       ├── auth.js          (로그인, 회원가입, 로그아웃)
-  │       ├── spots.js         (관광지 목록, 카드, 상세 모달)
+  │       ├── spots.js         (관광지 목록, 카드, 지도 마커, 페이징)
+  │       ├── spot-info.js     (카드 클릭 시 관광지 상세정보 모달)
+  │       ├── detail-info.js   (리뷰 모달 안 소개글·홈페이지 표시)
   │       ├── favorites.js     (즐겨찾기 토글, 목록 불러오기)
   │       ├── reviews.js       (리뷰 작성, 조회)
   │       ├── mypage.js        (마이페이지: 즐겨찾기/리뷰/방문기록 탭)
+  │       ├── calendar.js      (FullCalendar 달력, 일정 CRUD)
   │       ├── modal.js         (모달 열기/닫기)
   │       └── i18n.js          (한/영 번역 텍스트 모음)
-  └── application.properties   (서버 포트, DB, API 키 설정)
+  ├── schema.sql               (테이블 자동 생성 SQL)
+  └── application.properties   (서버 포트, DB, API 키, MyBatis 설정)
 
 ----------------------------------------------------------------
   DB 테이블 구조
@@ -149,7 +166,17 @@
   [visit_history] — 방문 기록
   id, user_id(FK→users), contentId, title, addr, image, visitedAt
 
-  ※ JPA가 ddl-auto=update 설정으로 테이블 자동 생성/수정
+  [schedules] — 여행 일정 (달력)
+  id, user_id(FK→users), title, travel_date(여행 날짜),
+  memo, created_at
+
+  [schedule_items] — 일정 안에 담긴 장소들
+  id, schedule_id(FK→schedules), contentId, title, addr,
+  visit_time, item_order(순서), memo
+
+  ※ 테이블은 schema.sql 로 자동 생성 (CREATE TABLE IF NOT EXISTS)
+  ※ DB 컬럼은 snake_case, 자바 필드는 camelCase
+     (application.properties 의 map-underscore-to-camel-case=true 로 자동 매핑)
 
 ----------------------------------------------------------------
   API 엔드포인트 목록
@@ -162,8 +189,11 @@
   GET    /api/auth/me                  — 현재 로그인 유저 확인
 
   관광지 (비로그인 접근 가능)
-  GET    /api/spots                    — 관광지 목록 (?areaCode=&contentTypeId=&lang=)
+  GET    /api/spots                    — 관광지 목록 (?areaCode=&contentTypeId=&lang=&pageNo=&numOfRows=)
+  GET    /api/spots/common             — 관광지 소개 정보 (?contentId=&lang=)
+                                          → detailCommon2 API (소개글·전화·홈페이지·주소)
   GET    /api/spots/detail             — 관광지 상세 (?contentId=&contentTypeId=&lang=)
+                                          → detailIntro2 API (축제 기간/장소 등)
 
   리뷰
   POST   /api/reviews                  — 리뷰 등록 (로그인 필요)
@@ -180,6 +210,14 @@
   POST   /api/visits                   — 방문 기록 저장 (카드 클릭 시 자동)
   GET    /api/visits                   — 방문 기록 목록
 
+  여행 일정 / 달력 (로그인 필요)
+  GET    /api/schedules                — 내 일정 전체 목록 (장소 포함)
+  POST   /api/schedules                — 새 일정 생성 (title, travelDate, memo)
+  GET    /api/schedules/{id}           — 일정 상세 (장소 포함)
+  DELETE /api/schedules/{id}           — 일정 삭제 (장소도 함께 삭제)
+  POST   /api/schedules/{id}/items     — 일정에 장소 추가
+  DELETE /api/schedules/{id}/items/{itemId} — 일정에서 장소 삭제
+
 ----------------------------------------------------------------
   구현 완료된 기능
 ----------------------------------------------------------------
@@ -193,9 +231,20 @@
      - 지역 선택 (17개 시/도)
      - 카테고리 선택 (관광지/문화시설/축제/레포츠/숙박/쇼핑/음식점)
      - 한국관광공사 API로 목록·상세 조회 (한/영)
+     - 목록 페이징 (한 페이지 6개, 페이지 버튼)
      - 축제(15) 선택 시 기간/장소/홈페이지 상세 표시
      - 카카오맵 마커 표시 + 인포윈도우 클릭
      - 카카오 내비게이션 연결 (새 탭)
+
+  ✅ 관광지 상세정보 모달 (spot-info.js)
+     - 카드의 사진/제목 클릭 시 상세정보 창 열림
+     - detailCommon2 API로 주소·전화·홈페이지·소개글 표시
+     - 리뷰 모달(💬 리뷰 보기)과는 별개의 창
+
+  ✅ 여행 일정 / 달력 (calendar.js, schedule 패키지)
+     - FullCalendar 달력에서 날짜 클릭 → 그 날 일정 표시
+     - 일정 생성/삭제, 일정에 관광지 장소 추가/삭제
+     - 관광지 상세에서 "일정에 추가" 버튼으로 장소 담기
 
   ✅ 즐겨찾기
      - 카드에서 하트 버튼으로 토글 (❤️/🤍)
@@ -238,10 +287,6 @@
   🔲 방문 기록 삭제
      - 방문 기록 개별 삭제 또는 전체 초기화 기능 미구현
 
-  🔲 관광지 목록 페이징
-     - 현재 numOfRows=20 고정 (한 번에 20개만 표시)
-     - '더보기' 버튼 또는 페이지 버튼으로 추가 목록 불러오기
-
   🔲 닉네임/비밀번호 수정
      - 마이페이지에 계정 정보 수정 기능 미구현
 
@@ -263,11 +308,15 @@
 
   1. MariaDB 실행 후 데이터베이스 생성:
      CREATE DATABASE projectDB CHARACTER SET utf8mb4;
+     (테이블은 서버 실행 시 schema.sql 이 자동 생성)
 
   2. 프로젝트 루트에 .env 파일 생성 후 API 키, DB 비밀번호 입력
 
   3. 터미널에서 실행:
-     mvn spring-boot:run
+     ./mvnw spring-boot:run      ← Git Bash 에서는 이 명령어
+     mvnw.cmd spring-boot:run    ← cmd(명령 프롬프트) 에서는 이 명령어
+     ※ Java 파일을 수정하면 서버를 껐다(Ctrl+C) 다시 켜야 반영됨
+     ※ HTML/CSS/JS 만 고쳤으면 브라우저 강력 새로고침(Ctrl+F5)만 하면 됨
 
   4. 브라우저에서 접속:
      http://localhost:8080
