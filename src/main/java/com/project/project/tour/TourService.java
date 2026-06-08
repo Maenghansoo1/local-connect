@@ -59,8 +59,7 @@ public class TourService {
         String url = baseUrl
                 + "?serviceKey=" + key
                 + "&MobileOS=ETC&MobileApp=TourApp&_type=json"
-                + "&contentId=" + contentId
-                + "&overviewYN=Y&defaultYN=Y";
+                + "&contentId=" + contentId;
 
         return restTemplate.getForObject(url, String.class);
     }

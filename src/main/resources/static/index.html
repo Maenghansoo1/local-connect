@@ -108,7 +108,22 @@
     </div>
 </div>
 
-<!-- ===== 관광지 상세 모달 ===== -->
+<!-- ===== 관광지 상세정보 모달 (카드 클릭 시 열림) ===== -->
+<div class="modal-overlay" id="spot-info-modal">
+    <div class="modal wide">
+        <button class="modal-close" onclick="closeModal('spot-info-modal')">✕</button>
+        <h2 id="info-title"></h2>
+        <img id="info-img" class="info-img" src="">
+
+        <!-- 기본 정보 (주소·전화·홈페이지) -->
+        <div id="info-meta" class="info-meta"></div>
+
+        <!-- 소개글 -->
+        <div id="info-overview" class="info-overview" style="display:none;"></div>
+    </div>
+</div>
+
+<!-- ===== 관광지 상세 모달 (리뷰 보기 클릭 시 열림) ===== -->
 <div class="modal-overlay" id="detail-modal">
     <div class="modal wide">
         <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
@@ -203,6 +218,7 @@
 <script src="js/favorites.js"></script>
 <script src="js/reviews.js"></script>
 <script src="js/mypage.js"></script>
+<script src="js/spot-info.js"></script>
 <script src="js/detail-info.js"></script>
 <script src="js/spots.js"></script>
 <script src="js/calendar.js"></script>

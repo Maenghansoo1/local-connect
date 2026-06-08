@@ -150,6 +150,7 @@ function addMapMarker(spot, card) {
                 })
             });
         }
+        openSpotInfo(spot); // 카드 클릭 시 관광지 상세정보 모달 열기 (spot-info.js)
     });
 }
 
