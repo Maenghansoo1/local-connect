@@ -2,7 +2,12 @@ function selectCategory(contentTypeId, btnEl) {
     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
     selectedCategory = contentTypeId;
-    if (selectedRegion) loadSpots(1);
+    // 축제는 지역 선택 없이도 바로 불러옴 (전국 기준 날짜순)
+    if (contentTypeId === '15') {
+        loadSpots(1);
+    } else if (selectedRegion) {
+        loadSpots(1);
+    }
 }
 
 function selectRegion(areaCode, lat, lng, btnEl) {
@@ -25,7 +30,17 @@ function loadSpots(page = 1) {
     listEl.innerHTML = '<p class="empty-msg">불러오는 중...</p>';
     document.getElementById('pagination').innerHTML = '';
 
-    fetch(`/api/spots?areaCode=${selectedRegion.areaCode}&contentTypeId=${selectedCategory}&lang=${currentLang}&pageNo=${page}&numOfRows=${PAGE_SIZE}`)
+    // 축제는 날짜순 전용 API 사용 (지역 없어도 전국 조회 가능)
+    let fetchUrl;
+    if (selectedCategory === '15') {
+        const areaCode = selectedRegion ? selectedRegion.areaCode : '';
+        fetchUrl = `/api/spots/festivals?areaCode=${areaCode}&lang=${currentLang}&pageNo=${page}&numOfRows=${PAGE_SIZE}`;
+    } else {
+        if (!selectedRegion) return;
+        fetchUrl = `/api/spots?areaCode=${selectedRegion.areaCode}&contentTypeId=${selectedCategory}&lang=${currentLang}&pageNo=${page}&numOfRows=${PAGE_SIZE}`;
+    }
+
+    fetch(fetchUrl)
         .then(res => res.json())
         .then(data => {
             markers.forEach(m => m.setMap(null));
@@ -98,9 +113,40 @@ function renderPagination(page, totalPages, totalCount) {
     el.innerHTML = html;
 }
 
+// 축제 날짜 배지 생성 ("진행중" / "D-N일")
+function getFestivalBadge(startStr, endStr) {
+    if (!startStr) return '';
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const s = new Date(startStr.slice(0,4), parseInt(startStr.slice(4,6))-1, parseInt(startStr.slice(6,8)));
+    const e = new Date((endStr||startStr).slice(0,4), parseInt((endStr||startStr).slice(4,6))-1, parseInt((endStr||startStr).slice(6,8)));
+    const msDay = 86400000;
+    if (today >= s && today <= e) {
+        return `<span class="festival-badge ongoing">🟢 진행중</span>`;
+    } else if (today < s) {
+        const dDay = Math.ceil((s - today) / msDay);
+        return `<span class="festival-badge upcoming">📅 D-${dDay}</span>`;
+    }
+    return `<span class="festival-badge ended">종료</span>`;
+}
+
+// "20260601" → "2026.06.01" 형식 변환
+function fmtDate(d) {
+    if (!d || d.length !== 8) return '';
+    return `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`;
+}
+
 function createSpotCard(spot) {
     const card = document.createElement('div');
     card.className = 'spot-card';
+
+    // 축제인 경우 날짜 정보 표시
+    const isFestival = spot.eventstartdate;
+    const festivalHtml = isFestival ? `
+        <div class="festival-info">
+            ${getFestivalBadge(spot.eventstartdate, spot.eventenddate)}
+            <span class="festival-period">${fmtDate(spot.eventstartdate)} ~ ${fmtDate(spot.eventenddate)}</span>
+        </div>` : '';
+
     card.innerHTML = `
         <div class="spot-card-img-wrap">
             <img src="${spot.firstimage || 'https://via.placeholder.com/250x120?text=No+Image'}" alt="${spot.title}">
@@ -108,6 +154,7 @@ function createSpotCard(spot) {
         </div>
         <div class="spot-card-body">
             <h3>${spot.title}</h3>
+            ${festivalHtml}
             <p>${spot.addr1 || i18n[currentLang].noAddr}</p>
             <div class="card-actions">
                 <button class="card-btn" onclick="openDetail(event, ${JSON.stringify(spot).replace(/"/g, '&quot;')})">${i18n[currentLang].reviewBtn}</button>
