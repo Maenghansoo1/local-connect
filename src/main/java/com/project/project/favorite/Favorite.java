@@ -1,42 +1,24 @@
 package com.project.project.favorite;
 
-import com.project.project.auth.User;
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "favorites")
 public class Favorite {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @Column(nullable = false)
+    private Long userId;
     private String contentId;
-
-    @Column(nullable = false)
     private String title;
-
     private String addr;
     private String image;
     private String contentTypeId;
     private String mapx;
     private String mapy;
-
-    @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void prePersist() { this.createdAt = LocalDateTime.now(); }
-
     public Long getId() { return id; }
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public void setId(Long id) { this.id = id; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
     public String getContentId() { return contentId; }
     public void setContentId(String contentId) { this.contentId = contentId; }
     public String getTitle() { return title; }
@@ -52,4 +34,5 @@ public class Favorite {
     public String getMapy() { return mapy; }
     public void setMapy(String mapy) { this.mapy = mapy; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

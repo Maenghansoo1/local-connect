@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -20,10 +21,10 @@ public class UserService implements UserDetailsService {
     }
 
     public void signup(SignupDto dto) {
-        if (userRepository.existsByUsername(dto.getUsername())) {
+        if (userRepository.countByUsername(dto.getUsername()) > 0) {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
         }
-        if (userRepository.existsByEmail(dto.getEmail())) {
+        if (userRepository.countByEmail(dto.getEmail()) > 0) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         }
         User user = new User();
@@ -32,13 +33,16 @@ public class UserService implements UserDetailsService {
         user.setNickname(dto.getNickname());
         user.setEmail(dto.getEmail());
         user.setProvider("local");
-        userRepository.save(user);
+        user.setCreatedAt(LocalDateTime.now());
+        userRepository.insert(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 아이디입니다."));
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("존재하지 않는 아이디입니다.");
+        }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), new ArrayList<>()
         );

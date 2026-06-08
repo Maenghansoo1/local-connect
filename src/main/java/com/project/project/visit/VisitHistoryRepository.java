@@ -1,10 +1,20 @@
 package com.project.project.visit;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-public interface VisitHistoryRepository extends JpaRepository<VisitHistory, Long> {
+@Mapper
+public interface VisitHistoryRepository {
+
+    @Select("SELECT * FROM visit_history WHERE user_id = #{userId} ORDER BY visited_at DESC")
     List<VisitHistory> findByUserIdOrderByVisitedAtDesc(Long userId);
-    boolean existsByUserIdAndContentId(Long userId, String contentId);
+
+    @Select("SELECT COUNT(*) FROM visit_history WHERE user_id = #{userId} AND content_id = #{contentId}")
+    int countByUserIdAndContentId(@Param("userId") Long userId, @Param("contentId") String contentId);
+
+    @Insert("INSERT INTO visit_history (user_id, content_id, title, addr, image, visited_at) " +
+            "VALUES (#{userId}, #{contentId}, #{title}, #{addr}, #{image}, #{visitedAt})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(VisitHistory history);
 }

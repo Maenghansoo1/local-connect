@@ -4,6 +4,7 @@ import com.project.project.auth.User;
 import com.project.project.auth.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -19,23 +20,24 @@ public class VisitHistoryService {
     }
 
     public void save(String username, Map<String, String> data) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new IllegalArgumentException("사용자 없음");
         String contentId = data.get("contentId");
-        if (visitHistoryRepository.existsByUserIdAndContentId(user.getId(), contentId)) return;
+        if (visitHistoryRepository.countByUserIdAndContentId(user.getId(), contentId) > 0) return;
 
         VisitHistory history = new VisitHistory();
-        history.setUser(user);
+        history.setUserId(user.getId());
         history.setContentId(contentId);
         history.setTitle(data.get("title"));
         history.setAddr(data.get("addr"));
         history.setImage(data.get("image"));
-        visitHistoryRepository.save(history);
+        history.setVisitedAt(LocalDateTime.now());
+        visitHistoryRepository.insert(history);
     }
 
     public List<VisitHistory> getList(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new IllegalArgumentException("사용자 없음");
         return visitHistoryRepository.findByUserIdOrderByVisitedAtDesc(user.getId());
     }
 }
