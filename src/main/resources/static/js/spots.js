@@ -1,3 +1,14 @@
+// 상단 검색창 — 지금 보이는 관광지 카드를 이름으로 걸러줌
+function searchSpots(keyword) {
+    const q = keyword.trim().toLowerCase();
+    document.querySelectorAll('#spot-list .spot-card').forEach(card => {
+        const titleEl = card.querySelector('h3');
+        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+        // 검색어가 제목에 들어있으면 보이고, 아니면 숨김
+        card.style.display = title.includes(q) ? '' : 'none';
+    });
+}
+
 function selectCategory(contentTypeId, btnEl) {
     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');

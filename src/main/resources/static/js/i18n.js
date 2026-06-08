@@ -1,9 +1,9 @@
 const i18n = {
     ko: {
         title: '🗺️ 한국 관광 가이드',
-        categoryLabel: '카테고리',
+        categoryLabel: '무엇을 찾으세요?',
         regionLabel: '지역',
-        categories: ['🏞️ 관광지', '🏛️ 문화시설', '🎉 축제', '🏄 레포츠', '🏨 숙박', '🛍️ 쇼핑', '🍽️ 음식점'],
+        categories: ['관광지', '문화시설', '축제', '레포츠', '숙박', '쇼핑', '음식점'],
         regions: {
             '1': '서울', '2': '인천', '31': '경기', '32': '강원', '33': '충북', '34': '충남',
             '3': '대전', '8': '세종', '37': '전북', '38': '전남', '5': '광주',
@@ -19,9 +19,9 @@ const i18n = {
     },
     en: {
         title: '🗺️ Korea Travel Guide',
-        categoryLabel: 'Category',
+        categoryLabel: 'What are you looking for?',
         regionLabel: 'Region',
-        categories: ['🏞️ Tourist Spots', '🏛️ Culture', '🎉 Festivals', '🏄 Leisure', '🏨 Stay', '🛍️ Shopping', '🍽️ Food'],
+        categories: ['Tourist Spots', 'Culture', 'Festivals', 'Leisure', 'Stay', 'Shopping', 'Food'],
         regions: {
             '1': 'Seoul', '2': 'Incheon', '31': 'Gyeonggi', '32': 'Gangwon', '33': 'Chungbuk', '34': 'Chungnam',
             '3': 'Daejeon', '8': 'Sejong', '37': 'Jeonbuk', '38': 'Jeonnam', '5': 'Gwangju',
@@ -48,7 +48,9 @@ function setLang(lang) {
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
 
     document.querySelectorAll('.category-btn').forEach((btn, i) => {
-        btn.textContent = t.categories[i];
+        // 아이콘은 그대로 두고 글자(.cat-label)만 언어에 맞게 바꿈
+        const label = btn.querySelector('.cat-label');
+        if (label) label.textContent = t.categories[i];
     });
     document.querySelectorAll('.region-btn').forEach(btn => {
         const code = btn.dataset.code;
