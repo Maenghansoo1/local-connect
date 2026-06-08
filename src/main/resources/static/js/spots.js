@@ -197,6 +197,7 @@ function addMapMarker(spot, card) {
                 })
             });
         }
+        openSpotInfo(spot); // 카드 클릭 시 관광지 상세정보 모달 열기 (spot-info.js)
     });
 }
 
@@ -261,6 +262,7 @@ function openDetail(e, spot) {
             .catch(() => {});
     }
 
+    loadDetailCommon(spot.contentid, currentLang); // 소개글·홈페이지 불러오기 (detail-info.js)
     loadReviews(spot.contentid);
     openModal('detail-modal');
 }

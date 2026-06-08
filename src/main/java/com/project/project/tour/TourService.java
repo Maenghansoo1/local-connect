@@ -74,6 +74,21 @@ public class TourService {
         return restTemplate.getForObject(url, String.class);
     }
 
+    public String getDetailCommon(String contentId, String lang) {
+        boolean isEn = "en".equalsIgnoreCase(lang);
+        String baseUrl = isEn
+                ? "http://apis.data.go.kr/B551011/EngService2/detailCommon2"
+                : "http://apis.data.go.kr/B551011/KorService2/detailCommon2";
+        String key = isEn ? apiKeyEn : apiKey;
+
+        String url = baseUrl
+                + "?serviceKey=" + key
+                + "&MobileOS=ETC&MobileApp=TourApp&_type=json"
+                + "&contentId=" + contentId;
+
+        return restTemplate.getForObject(url, String.class);
+    }
+
     public String getDetailIntro(String contentId, String contentTypeId, String lang) {
         boolean isEn = "en".equalsIgnoreCase(lang);
         String baseUrl = isEn
