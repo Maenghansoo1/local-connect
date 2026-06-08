@@ -178,6 +178,7 @@ function openDetail(e, spot) {
             .catch(() => {});
     }
 
+    loadDetailCommon(spot.contentid, currentLang); // 소개글·홈페이지 불러오기 (detail-info.js)
     loadReviews(spot.contentid);
     openModal('detail-modal');
 }

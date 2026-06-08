@@ -20,6 +20,13 @@ public class TourController {
         return tourService.getSpots(areaCode, contentTypeId, lang);
     }
 
+    @GetMapping("/spots/common")
+    public String getDetailCommon(
+            @RequestParam String contentId,
+            @RequestParam(defaultValue = "ko") String lang) {
+        return tourService.getDetailCommon(contentId, lang);
+    }
+
     @GetMapping("/spots/detail")
     public String getDetailIntro(
             @RequestParam String contentId,
