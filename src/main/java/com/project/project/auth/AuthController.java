@@ -28,9 +28,6 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> me(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).body(Map.of("message", "로그인 필요"));
-        }
         return ResponseEntity.ok(Map.of("username", authentication.getName()));
     }
 }

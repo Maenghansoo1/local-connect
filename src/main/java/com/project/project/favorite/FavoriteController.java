@@ -19,19 +19,20 @@ public class FavoriteController {
     @PostMapping("/toggle")
     public ResponseEntity<?> toggle(@RequestBody Map<String, String> spotData,
                                     Authentication authentication) {
-        if (authentication == null) return ResponseEntity.status(401).body(Map.of("message", "로그인이 필요합니다."));
         return ResponseEntity.ok(favoriteService.toggle(authentication.getName(), spotData));
     }
 
     @GetMapping
     public ResponseEntity<?> getList(Authentication authentication) {
-        if (authentication == null) return ResponseEntity.status(401).body(Map.of("message", "로그인이 필요합니다."));
         return ResponseEntity.ok(favoriteService.getList(authentication.getName()));
     }
 
+    // permitAll — 비로그인 사용자는 saved:false 반환 (Security 통과 후 컨트롤러에서 처리)
     @GetMapping("/check")
-    public ResponseEntity<?> check(@RequestParam String contentId, Authentication authentication) {
+    public ResponseEntity<?> check(@RequestParam String contentId,
+                                   Authentication authentication) {
         if (authentication == null) return ResponseEntity.ok(Map.of("saved", false));
-        return ResponseEntity.ok(Map.of("saved", favoriteService.isFavorite(authentication.getName(), contentId)));
+        return ResponseEntity.ok(Map.of("saved",
+                favoriteService.isFavorite(authentication.getName(), contentId)));
     }
 }

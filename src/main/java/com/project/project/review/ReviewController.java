@@ -19,7 +19,6 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Map<String, String> data,
                                   Authentication authentication) {
-        if (authentication == null) return ResponseEntity.status(401).body(Map.of("message", "로그인이 필요합니다."));
         reviewService.save(authentication.getName(), data);
         return ResponseEntity.ok(Map.of("message", "리뷰가 등록되었습니다."));
     }
@@ -31,13 +30,12 @@ public class ReviewController {
 
     @GetMapping("/my")
     public ResponseEntity<?> getMyReviews(Authentication authentication) {
-        if (authentication == null) return ResponseEntity.status(401).body(Map.of("message", "로그인이 필요합니다."));
         return ResponseEntity.ok(reviewService.getMyReviews(authentication.getName()));
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<?> delete(@PathVariable Long reviewId, Authentication authentication) {
-        if (authentication == null) return ResponseEntity.status(401).body(Map.of("message", "로그인이 필요합니다."));
+    public ResponseEntity<?> delete(@PathVariable Long reviewId,
+                                    Authentication authentication) {
         reviewService.delete(authentication.getName(), reviewId);
         return ResponseEntity.ok(Map.of("message", "리뷰가 삭제되었습니다."));
     }
