@@ -5,6 +5,7 @@ const i18n = {
         regionLabel: '지역',
         categories: ['관광지', '문화시설', '축제', '레포츠', '숙박', '쇼핑', '음식점'],
         regions: {
+            'all': '전체',
             '1': '서울', '2': '인천', '31': '경기', '32': '강원', '33': '충북', '34': '충남',
             '3': '대전', '8': '세종', '37': '전북', '38': '전남', '5': '광주',
             '35': '경북', '36': '경남', '4': '대구', '6': '부산', '7': '울산', '39': '제주'
@@ -15,6 +16,7 @@ const i18n = {
         noAddr: '주소 정보 없음',
         reviewBtn: '💬 리뷰 보기',
         naviBtn: '🚗 길찾기',
+        festivalSort: '🎉 임박축제순',
         login: '로그인', signup: '회원가입', logout: '로그아웃', mypage: '마이페이지',
     },
     en: {
@@ -23,6 +25,7 @@ const i18n = {
         regionLabel: 'Region',
         categories: ['Tourist Spots', 'Culture', 'Festivals', 'Leisure', 'Stay', 'Shopping', 'Food'],
         regions: {
+            'all': 'All',
             '1': 'Seoul', '2': 'Incheon', '31': 'Gyeonggi', '32': 'Gangwon', '33': 'Chungbuk', '34': 'Chungnam',
             '3': 'Daejeon', '8': 'Sejong', '37': 'Jeonbuk', '38': 'Jeonnam', '5': 'Gwangju',
             '35': 'Gyeongbuk', '36': 'Gyeongnam', '4': 'Daegu', '6': 'Busan', '7': 'Ulsan', '39': 'Jeju'
@@ -33,6 +36,7 @@ const i18n = {
         noAddr: 'No address info',
         reviewBtn: '💬 Reviews',
         naviBtn: '🚗 Directions',
+        festivalSort: '🎉 Upcoming',
         login: 'Login', signup: 'Sign Up', logout: 'Logout', mypage: 'My Page',
     }
 };
@@ -46,6 +50,9 @@ function setLang(lang) {
     document.getElementById('section-region').textContent = t.regionLabel;
     document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+    const fsLabel = document.getElementById('festival-sort-label');
+    if (fsLabel) fsLabel.textContent = t.festivalSort;
 
     document.querySelectorAll('.category-btn').forEach((btn, i) => {
         // 아이콘은 그대로 두고 글자(.cat-label)만 언어에 맞게 바꿈

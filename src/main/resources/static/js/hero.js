@@ -4,9 +4,9 @@
 
 // 슬라이드 데이터 (배경색 · 뱃지 · 제목 · 설명)
 var heroSlides = [
-    { bg: 'linear-gradient(120deg,#FF3478,#FF8FB6)', badge: '추천', title: '전국 관광지를 한눈에', sub: '지역을 골라 가까운 명소를 찾아보세요' },
-    { bg: 'linear-gradient(120deg,#7C5CFF,#B49CFF)', badge: '축제', title: '지금 열리는 축제, 날짜순으로', sub: '가까운 날짜의 축제를 바로 확인하세요' },
-    { bg: 'linear-gradient(120deg,#00B8A9,#5BE0D4)', badge: '일정', title: '나만의 여행 일정 만들기', sub: '마음에 든 곳을 달력에 저장해요' }
+    { bg: 'linear-gradient(120deg,#2B2417,#574325)', badge: '추천', title: '전국 관광지를 한눈에', sub: '지역을 골라 가까운 명소를 찾아보세요' },
+    { bg: 'linear-gradient(120deg,#241F1A,#4A3A2C)', badge: '축제', title: '지금 열리는 축제, 날짜순으로', sub: '가까운 날짜의 축제를 바로 확인하세요' },
+    { bg: 'linear-gradient(120deg,#1F1D18,#3D3A2A)', badge: '일정', title: '나만의 여행 일정 만들기', sub: '마음에 든 곳을 달력에 저장해요' }
 ];
 
 var heroIndex = 0;     // 지금 보이는 슬라이드 번호

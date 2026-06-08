@@ -45,9 +45,10 @@ public class TourService {
                 + "?serviceKey=" + key
                 + "&MobileOS=ETC&MobileApp=TourApp&_type=json"
                 + "&contentTypeId=" + typeId
-                + "&areaCode=" + areaCode
                 + "&numOfRows=" + numOfRows
-                + "&pageNo=" + pageNo;
+                + "&pageNo=" + pageNo
+                // 지역(areaCode)이 있을 때만 지역 조건 추가 (전체면 생략 → 전국 조회)
+                + (areaCode != null && !areaCode.isEmpty() ? "&areaCode=" + areaCode : "");
 
         return restTemplate.getForObject(url, String.class);
     }

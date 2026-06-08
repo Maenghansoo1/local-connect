@@ -21,7 +21,8 @@ function openSpotInfo(spot) {
     openModal('spot-info-modal');
 
     // 2) 백엔드에서 상세 정보(소개글·전화·홈페이지) 불러와서 채우기
-    fetch('/api/spots/common?contentId=' + spot.contentid + '&lang=' + currentLang)
+    // ★ API 변경 지점 — 카드 클릭 요약창은 detailCommon2 API 사용 (모든 관광지 공통)
+    fetch('/api/spots/common?contentId=' + spot.contentid + '&lang=' + currentLang)  // → detailCommon2 API
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var item = data.response && data.response.body && data.response.body.items && data.response.body.items.item;

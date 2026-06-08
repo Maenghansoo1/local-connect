@@ -9,7 +9,8 @@ function loadDetailCommon(contentId, lang) {
     infoEl.innerHTML = '';
 
     // 백엔드에 소개 정보 요청
-    fetch('/api/spots/common?contentId=' + contentId + '&lang=' + lang)
+    // ★ API 변경 지점 — 상세 모달의 소개글·홈페이지는 detailCommon2 API 사용
+    fetch('/api/spots/common?contentId=' + contentId + '&lang=' + lang)  // → detailCommon2 API
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var item = data.response && data.response.body && data.response.body.items && data.response.body.items.item;

@@ -1,24 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
 
 /* ===== CSS 변수 ===== */
-/* 야놀자 스타일: 핑크 메인 색 + 깔끔한 흰 배경 + 둥근 모서리 */
+/* 차분한 다크 + 골드 무드: 어두운 차콜 배경 + 크림 글자 + 골드 강조 */
 :root {
-    --primary:       #FF3478;   /* 야놀자 핑크 (메인 브랜드 색) */
-    --primary-dark:  #E61E63;   /* 진한 핑크 (hover용) */
-    --primary-light: #FFE9F1;   /* 연한 핑크 배경 */
-    --accent:        #FF5A5F;   /* 빨강 계열 — 에러/삭제 표시용 */
-    --accent-dark:   #E84347;
-    --region:        #2E2E3A;   /* 지역 버튼 선택 색 (짙은 차콜) */
+    --primary:       #C9A86A;   /* 골드 (메인 강조색) */
+    --primary-dark:  #B5945A;   /* 진한 골드 (hover용) */
+    --primary-light: #2A2419;   /* 어두운 골드빛 배경 (선택 상태) */
+    --accent:        #D9735F;   /* 차분한 테라코타 — 에러/삭제 표시용 */
+    --accent-dark:   #C75D4F;
+    --region:        #C9A86A;   /* 지역 버튼 선택 색 (골드) */
     --kakao:         #FEE500;
-    --surface:       #FFFFFF;
-    --bg:            #F6F6F9;    /* 페이지 배경 (아주 연한 회색) */
-    --text:          #18181F;    /* 본문 글자 (거의 검정) */
-    --text-muted:    #8B8B98;    /* 흐린 글자 */
-    --border:        #ECECF1;
-    --shadow-xs:  0 1px 4px rgba(20,20,40,0.06);
-    --shadow-sm:  0 2px 10px rgba(20,20,40,0.08);
-    --shadow-md:  0 6px 24px rgba(20,20,40,0.10);
-    --shadow-lg:  0 16px 48px rgba(20,20,40,0.16);
+    --on-primary:    #1A1610;   /* 골드 버튼 위 글자색 (어둡게) */
+    --surface:       #221E18;   /* 카드/모달 배경 (따뜻한 다크) */
+    --bg:            #16130F;    /* 페이지 배경 (깊은 차콜) */
+    --text:          #EFE7D6;    /* 본문 글자 (크림) */
+    --text-muted:    #9A8F7C;    /* 흐린 글자 (웜 그레이) */
+    --border:        #34302A;    /* 미묘한 다크 보더 */
+    --shadow-xs:  0 1px 4px rgba(0,0,0,0.30);
+    --shadow-sm:  0 2px 10px rgba(0,0,0,0.40);
+    --shadow-md:  0 6px 24px rgba(0,0,0,0.50);
+    --shadow-lg:  0 16px 48px rgba(0,0,0,0.60);
     --radius-sm:  10px;
     --radius:     16px;
     --radius-lg:  22px;
@@ -59,8 +60,15 @@ body {
     color: var(--text);
     letter-spacing: -0.3px;
 }
+/* 제목 옆 로고 이미지 */
+.navbar-logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
 .navbar-logo span {
-    background: linear-gradient(135deg, var(--primary), #FF7AA8);
+    background: linear-gradient(135deg, #C9A86A, #E6D2A0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -92,6 +100,53 @@ body {
     font-weight: 600;
     box-shadow: var(--shadow-xs);
 }
+
+/* ===== 축제 임박순 정렬 토글 (노브가 세로로 움직임) ===== */
+.festival-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+.festival-toggle input { display: none; }
+.festival-toggle-track {
+    position: relative;
+    width: 22px;
+    height: 40px;
+    background: var(--border);
+    border-radius: 11px;
+    transition: background var(--ease);
+    flex-shrink: 0;
+}
+.festival-toggle-knob {
+    position: absolute;
+    left: 3px;
+    bottom: 3px;           /* 꺼짐: 노브가 아래쪽 */
+    width: 16px;
+    height: 16px;
+    background: #EFE7D6;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    transition: transform var(--ease);
+}
+/* 켜지면 트랙이 골드로 변하고 노브가 위로 올라감 */
+.festival-toggle input:checked + .festival-toggle-track {
+    background: var(--primary);
+}
+.festival-toggle input:checked + .festival-toggle-track .festival-toggle-knob {
+    transform: translateY(-18px);   /* 40 - 3 - 16 - 3 = 18 */
+}
+.festival-toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color var(--ease);
+    white-space: nowrap;
+}
+.festival-toggle input:checked ~ .festival-toggle-label {
+    color: var(--primary);
+}
 .nav-buttons { display: flex; gap: 8px; align-items: center; }
 .nav-btn {
     padding: 8px 18px;
@@ -104,13 +159,13 @@ body {
     border: 1.5px solid transparent;
 }
 .btn-login  { background: var(--surface); border-color: var(--border); color: var(--text); }
-.btn-signup { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-signup { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
 .btn-logout { background: var(--surface); border-color: var(--border); color: var(--text-muted); }
-.btn-mypage { background: var(--primary-light); color: var(--primary); border-color: var(--primary-light); }
+.btn-mypage { background: var(--primary-light); color: var(--primary); border-color: var(--border); }
 .btn-login:hover  { border-color: var(--primary); color: var(--primary); }
 .btn-signup:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
 .btn-logout:hover { border-color: var(--accent); color: var(--accent); }
-.btn-mypage:hover { background: #dde1fa; }
+.btn-mypage:hover { background: #332B1D; }
 .user-info { font-size: 13px; font-weight: 500; color: var(--text-muted); }
 
 /* ===== 메인 콘텐츠 ===== */
@@ -232,7 +287,7 @@ body {
     height: 44px;
     border: none;
     border-radius: 50%;
-    background: rgba(255,255,255,0.9);
+    background: rgba(34,30,24,0.7);
     color: var(--text);
     font-size: 22px;
     cursor: pointer;
@@ -242,7 +297,7 @@ body {
     justify-content: center;
     transition: all var(--ease);
 }
-.hero-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.08); }
+.hero-arrow:hover { background: rgba(34,30,24,0.92); transform: translateY(-50%) scale(1.08); }
 .hero-prev { left: 18px; }
 .hero-next { right: 18px; }
 .hero-indicator {
@@ -274,7 +329,7 @@ body {
 .promo-text span { font-size: 13px; color: var(--text-muted); }
 .promo-btn {
     background: var(--primary);
-    color: #fff;
+    color: var(--on-primary);
     border: none;
     padding: 12px 22px;
     border-radius: var(--radius-pill);
@@ -343,18 +398,13 @@ body {
     transition: all var(--ease);
 }
 .cat-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
-/* 카테고리별 파스텔 배경색 (NOL처럼 알록달록하게) */
-.cat-row .category-btn:nth-child(1) .cat-emoji { background: #E7F8EE; }
-.cat-row .category-btn:nth-child(2) .cat-emoji { background: #E8F0FE; }
-.cat-row .category-btn:nth-child(3) .cat-emoji { background: #FFE9F1; }
-.cat-row .category-btn:nth-child(4) .cat-emoji { background: #FFF1E0; }
-.cat-row .category-btn:nth-child(5) .cat-emoji { background: #F0EAFE; }
-.cat-row .category-btn:nth-child(6) .cat-emoji { background: #E4F8F6; }
-.cat-row .category-btn:nth-child(7) .cat-emoji { background: #FEEAEA; }
-/* 선택된 카테고리 — 핑크 강조 (위 색들보다 뒤에 둬서 우선 적용) */
+/* 카테고리 아이콘 박스 — 다크 테마라 모두 은은한 다크 톤 */
+.cat-row .category-btn .cat-emoji { background: #2A2620; border: 1px solid var(--border); }
+/* 선택된 카테고리 — 골드 강조 (위 색들보다 뒤에 둬서 우선 적용) */
 .cat-row .category-btn.active .cat-emoji {
     background: var(--primary);
-    box-shadow: 0 6px 16px rgba(255,52,120,0.35);
+    border-color: var(--primary);
+    box-shadow: 0 6px 16px rgba(201,168,106,0.30);
 }
 .category-btn.active .cat-label { color: var(--primary); font-weight: 700; }
 .region-btn {
@@ -370,13 +420,13 @@ body {
     transition: all var(--ease);
     box-shadow: var(--shadow-xs);
 }
-.region-btn:hover { border-color: var(--region); color: var(--region); background: #F2F2F5; }
+.region-btn:hover { border-color: var(--region); color: var(--region); background: var(--primary-light); }
 .region-btn.active {
     background: var(--region);
     border-color: var(--region);
-    color: #fff;
+    color: var(--on-primary);
     font-weight: 600;
-    box-shadow: 0 4px 14px rgba(46,46,58,0.30);
+    box-shadow: 0 4px 14px rgba(201,168,106,0.28);
 }
 
 /* ===== 지도 + 목록 ===== */
@@ -450,8 +500,8 @@ body {
 .page-btn.active {
     background: var(--primary);
     border-color: var(--primary);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(255,52,120,0.35);
+    color: var(--on-primary);
+    box-shadow: 0 2px 8px rgba(201,168,106,0.30);
 }
 .page-btn:disabled {
     opacity: 0.35;
@@ -494,7 +544,7 @@ body {
     position: absolute;
     top: 8px;
     right: 8px;
-    background: rgba(255,255,255,0.92);
+    background: rgba(20,17,12,0.75);
     border: none;
     border-radius: 50%;
     width: 32px;
@@ -542,8 +592,8 @@ body {
     transition: all var(--ease);
 }
 .card-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
-.btn-navi { background: var(--kakao); border-color: var(--kakao); color: #191919; }
-.btn-navi:hover { background: #fdd300; border-color: #fdd300; color: #191919; }
+.btn-navi { background: var(--bg); border-color: var(--border); color: var(--text); }
+.btn-navi:hover { background: var(--kakao); border-color: var(--kakao); color: #191919; }
 /* ===== 축제 날짜 배지 ===== */
 .festival-info {
     display: flex;
@@ -558,9 +608,9 @@ body {
     padding: 2px 8px;
     border-radius: var(--radius-pill);
 }
-.festival-badge.ongoing  { background: #DCFCE7; color: #15803D; }
-.festival-badge.upcoming { background: #EEF0FD; color: var(--primary); }
-.festival-badge.ended    { background: #F3F4F6; color: #9CA3AF; }
+.festival-badge.ongoing  { background: #21321F; color: #84C18A; }
+.festival-badge.upcoming { background: var(--primary-light); color: var(--primary); }
+.festival-badge.ended    { background: #2A2620; color: var(--text-muted); }
 .festival-period {
     font-size: 11px;
     color: var(--text-muted);
@@ -579,7 +629,7 @@ body {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(15,20,50,0.5);
+    background: rgba(0,0,0,0.66);
     backdrop-filter: blur(4px);
     z-index: 200;
     justify-content: center;
@@ -666,14 +716,14 @@ body {
 .form-group textarea:focus {
     border-color: var(--primary);
     background: var(--surface);
-    box-shadow: 0 0 0 4px rgba(255,52,120,0.12);
+    box-shadow: 0 0 0 4px rgba(201,168,106,0.16);
 }
 .form-group textarea { resize: vertical; min-height: 88px; }
 .form-submit {
     width: 100%;
     padding: 13px;
     background: var(--primary);
-    color: #fff;
+    color: var(--on-primary);
     border: none;
     border-radius: var(--radius-sm);
     font-size: 15px;
@@ -686,7 +736,7 @@ body {
 }
 .form-submit:hover {
     background: var(--primary-dark);
-    box-shadow: 0 4px 16px rgba(255,52,120,0.4);
+    box-shadow: 0 4px 16px rgba(201,168,106,0.35);
     transform: translateY(-1px);
 }
 .form-submit:active { transform: translateY(0); }
@@ -766,7 +816,7 @@ body {
     border-radius: 4px;
     transition: all var(--ease);
 }
-.review-delete:hover { background: #FEE2E2; color: var(--accent); }
+.review-delete:hover { background: rgba(217,115,95,0.16); color: var(--accent); }
 
 /* ===== 마이페이지 카드 ===== */
 .my-card {
@@ -802,7 +852,7 @@ body {
     transition: all var(--ease);
     flex-shrink: 0;
 }
-.my-card-del:hover { background: #FEE2E2; color: var(--accent); }
+.my-card-del:hover { background: rgba(217,115,95,0.16); color: var(--accent); }
 
 /* ===== 별점 ===== */
 .star-select { display: flex; gap: 4px; margin-top: 6px; }
@@ -817,8 +867,8 @@ body {
 
 /* ===== 축제 정보 박스 ===== */
 .event-info-box {
-    background: linear-gradient(135deg, #FFFBEB, #FFF8E1);
-    border: 1px solid #FDE68A;
+    background: linear-gradient(135deg, #241F16, #2C2519);
+    border: 1px solid #4A3F28;
     border-radius: var(--radius-sm);
     padding: 14px 18px;
     margin-bottom: 18px;
@@ -827,7 +877,7 @@ body {
     color: var(--text);
 }
 .event-info-box p { margin: 0; }
-.event-info-box strong { color: #92400E; }
+.event-info-box strong { color: var(--primary); }
 
 /* ===== 관광지 상세정보 모달 ===== */
 /* 큰 대표 이미지 */
@@ -876,7 +926,7 @@ body {
     border: none;
     border-radius: var(--radius-sm);
     background: var(--primary);
-    color: #ffffff;
+    color: var(--on-primary);
     cursor: pointer;
     transition: all var(--ease);
 }
@@ -905,10 +955,23 @@ body {
     min-height: 400px;
 }
 
+/* FullCalendar 다크 테마 변수 (달력 격자·글자를 어둡게) */
+.fc {
+    --fc-border-color: var(--border);
+    --fc-page-bg-color: var(--surface);
+    --fc-neutral-bg-color: #2A2620;
+    --fc-today-bg-color: rgba(201,168,106,0.12);
+    --fc-list-event-hover-bg-color: var(--primary-light);
+}
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-toolbar-title { color: var(--text); }
+
 /* FullCalendar 버튼 스타일 덮어쓰기 */
 .fc .fc-button-primary {
     background: var(--primary) !important;
     border-color: var(--primary) !important;
+    color: var(--on-primary) !important;
     font-family: inherit !important;
     font-size: 13px !important;
     font-weight: 600 !important;
@@ -982,7 +1045,7 @@ body {
     border-radius: 4px;
     transition: all var(--ease);
 }
-.sch-item-del:hover { background: #FEE2E2; color: var(--accent); }
+.sch-item-del:hover { background: rgba(217,115,95,0.16); color: var(--accent); }
 .sch-item-memo { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 .sch-no-places { font-size: 12px; color: var(--text-muted); padding: 6px 0; }
 
@@ -998,7 +1061,7 @@ body {
     min-width: 24px;
     height: 24px;
     background: var(--primary);
-    color: #fff;
+    color: var(--on-primary);
     border-radius: 50%;
     font-size: 11px;
     font-weight: 700;
@@ -1024,7 +1087,7 @@ body {
     border-radius: 4px;
     transition: all var(--ease);
 }
-.sch-place-del:hover { background: #FEE2E2; color: var(--accent); }
+.sch-place-del:hover { background: rgba(217,115,95,0.16); color: var(--accent); }
 
 /* ===== 새 일정 추가 폼 ===== */
 .cal-add-form {
@@ -1047,7 +1110,7 @@ body {
     cursor: pointer;
     transition: all var(--ease);
 }
-.detail-sch-btn:hover { background: var(--primary); color: #fff; }
+.detail-sch-btn:hover { background: var(--primary); color: var(--on-primary); }
 
 /* ===== 일정 선택 버튼 ===== */
 .sch-select-btn {
@@ -1069,8 +1132,8 @@ body {
 .sch-select-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
 
 /* ===== 달력 네비바 버튼 ===== */
-.btn-calendar { background: var(--primary-light); color: var(--primary); border-color: var(--primary-light); }
-.btn-calendar:hover { background: #dde1fa; }
+.btn-calendar { background: var(--primary-light); color: var(--primary); border-color: var(--border); }
+.btn-calendar:hover { background: #332B1D; }
 
 /* ===== 상세 모달 내부 ===== */
 .detail-navi-btn {
@@ -1098,5 +1161,5 @@ body {
     color: var(--text);
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 2px solid var(--primary-light);
+    border-bottom: 2px solid var(--border);
 }

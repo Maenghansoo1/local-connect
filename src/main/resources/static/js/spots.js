@@ -13,6 +13,14 @@ function selectCategory(contentTypeId, btnEl) {
     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
     selectedCategory = contentTypeId;
+
+    // 축제(15)가 아닌 카테고리를 고르면 임박순 정렬 토글 끄기
+    if (festivalSortMode && contentTypeId !== '15') {
+        festivalSortMode = false;
+        const t = document.getElementById('festival-sort-toggle');
+        if (t) t.checked = false;
+    }
+
     // 축제는 지역 선택 없이도 바로 불러옴 (전국 기준 날짜순)
     if (contentTypeId === '15') {
         loadSpots(1);
@@ -21,17 +29,34 @@ function selectCategory(contentTypeId, btnEl) {
     }
 }
 
+// ===== 축제 임박순 정렬 토글 =====
+// 켜면 축제 카테고리로 전환 + 시작일이 가까운 순으로 정렬
+function toggleFestivalSort() {
+    festivalSortMode = document.getElementById('festival-sort-toggle').checked;
+
+    if (festivalSortMode) {
+        // 정렬은 축제에만 의미가 있으므로 축제 카테고리로 자동 전환
+        selectedCategory = '15';
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        const festBtn = document.getElementById('cat-festival');
+        if (festBtn) festBtn.classList.add('active');
+    }
+
+    loadSpots(1);
+}
+
 function selectRegion(areaCode, lat, lng, btnEl) {
     document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
     selectedRegion = {
         areaCode,
-        regionName: i18n[currentLang].regions[areaCode] || areaCode,
+        // 전체(areaCode 빈 값)면 '전체', 아니면 지역 이름
+        regionName: areaCode ? (i18n[currentLang].regions[areaCode] || areaCode) : i18n[currentLang].regions.all,
         lat,
         lng
     };
     map.setCenter(new kakao.maps.LatLng(lat, lng));
-    map.setLevel(10);
+    map.setLevel(areaCode ? 10 : 13);  // 전체는 전국이 보이게 넓게
     loadSpots(1);
 }
 
@@ -41,12 +66,14 @@ function loadSpots(page = 1) {
     listEl.innerHTML = '<p class="empty-msg">불러오는 중...</p>';
     document.getElementById('pagination').innerHTML = '';
 
-    // 축제는 날짜순 전용 API 사용 (지역 없어도 전국 조회 가능)
+    // ★ API 변경 지점 1 — 목록 API가 카테고리에 따라 바뀜
     let fetchUrl;
     if (selectedCategory === '15') {
+        // [축제] searchFestival2 API → 시작일/종료일 줌 (지역 없어도 전국 조회 가능)
         const areaCode = selectedRegion ? selectedRegion.areaCode : '';
         fetchUrl = `/api/spots/festivals?areaCode=${areaCode}&lang=${currentLang}&pageNo=${page}&numOfRows=${PAGE_SIZE}`;
     } else {
+        // [그 외] areaBasedList2 API → 지역·카테고리별 기본 목록
         if (!selectedRegion) return;
         fetchUrl = `/api/spots?areaCode=${selectedRegion.areaCode}&contentTypeId=${selectedCategory}&lang=${currentLang}&pageNo=${page}&numOfRows=${PAGE_SIZE}`;
     }
@@ -70,6 +97,14 @@ function loadSpots(page = 1) {
             }
 
             const itemArr = Array.isArray(items) ? items : [items];
+
+            // 임박축제순 토글 ON: 시작일(eventstartdate)이 가까운 순으로 정렬
+            if (festivalSortMode) {
+                itemArr.sort((a, b) =>
+                    (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999')
+                );
+            }
+
             itemArr.forEach(spot => {
                 const card = createSpotCard(spot);
                 listEl.appendChild(card);
@@ -241,8 +276,9 @@ function openDetail(e, spot) {
     eventInfoEl.style.display = 'none';
     eventInfoEl.innerHTML = '';
 
+    // ★ API 변경 지점 2 — 축제일 때만 detailIntro2 API를 추가로 호출 (기간·행사장소)
     if (selectedCategory === '15') {
-        fetch(`/api/spots/detail?contentId=${spot.contentid}&contentTypeId=15&lang=${currentLang}`)
+        fetch(`/api/spots/detail?contentId=${spot.contentid}&contentTypeId=15&lang=${currentLang}`)  // → detailIntro2 API
             .then(r => r.json())
             .then(data => {
                 const item = data.response?.body?.items?.item;
@@ -273,6 +309,7 @@ function openDetail(e, spot) {
             .catch(() => {});
     }
 
+    // ★ API 변경 지점 3 — 모든 상세 모달은 detailCommon2 API로 소개글·홈페이지를 부름 (detail-info.js 안에서 호출)
     loadDetailCommon(spot.contentid, currentLang); // 소개글·홈페이지 불러오기 (detail-info.js)
     loadReviews(spot.contentid);
     openModal('detail-modal');

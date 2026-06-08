@@ -31,7 +31,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // 정적 리소스 & 공개 API
-                .requestMatchers("/", "/index.html", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/images/**").permitAll()
                 // 관광지 조회 — 비로그인 허용
                 .requestMatchers("/api/spots/**").permitAll()
                 // 인증 — signup/login/logout 은 비로그인 허용, me 는 로그인 필요

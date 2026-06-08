@@ -11,7 +11,8 @@
 <!-- ===== 상단 네비게이션 (NOL 스타일: 로고 + 검색창 + 오른쪽 메뉴) ===== -->
 <nav class="navbar">
     <div class="navbar-logo">
-        🗺️ <span id="nav-title">한국 관광 가이드</span>
+        <img src="images/logo.png" class="navbar-logo-img" alt="로고">
+        <span id="nav-title">한국 관광 가이드</span>
     </div>
 
     <!-- 검색창 — 현재 보이는 관광지 목록을 이름으로 걸러줌 -->
@@ -27,6 +28,12 @@
             <button class="btn-lang active" id="btn-ko" onclick="setLang('ko')">🇰🇷</button>
             <button class="btn-lang" id="btn-en" onclick="setLang('en')">🇺🇸</button>
         </div>
+        <!-- 축제 임박순 정렬 토글 (노브가 세로로 움직임) -->
+        <label class="festival-toggle" title="오늘부터 가장 가까운 축제 순으로 정렬">
+            <input type="checkbox" id="festival-sort-toggle" onchange="toggleFestivalSort()">
+            <span class="festival-toggle-track"><span class="festival-toggle-knob"></span></span>
+            <span class="festival-toggle-label" id="festival-sort-label">🎉 임박축제순</span>
+        </label>
         <div class="nav-buttons" id="nav-buttons"></div>
     </div>
 </nav>
@@ -94,6 +101,7 @@
     <div class="filter-section">
         <div class="section-label" id="section-region">지역</div>
         <div class="filter-row">
+            <button class="region-btn active" data-code="all" onclick="selectRegion('', 36.5, 127.5, this)">전체</button>
             <button class="region-btn" data-code="1"  onclick="selectRegion('1',  37.5665, 126.9780, this)">서울</button>
             <button class="region-btn" data-code="2"  onclick="selectRegion('2',  37.4563, 126.7052, this)">인천</button>
             <button class="region-btn" data-code="31" onclick="selectRegion('31', 37.4138, 127.5183, this)">경기</button>
