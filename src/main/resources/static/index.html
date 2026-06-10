@@ -226,7 +226,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <textarea id="review-content" placeholder="이 장소에 대한 솔직한 리뷰를 남겨주세요."></textarea>
+                <textarea id="review-content" maxlength="1000" placeholder="이 장소에 대한 솔직한 리뷰를 남겨주세요." oninput="updateReviewCharCount()"></textarea>
+                <p class="char-count" id="review-char-count">0/1000</p>
             </div>
             <button class="form-submit" onclick="submitReview()">리뷰 등록</button>
             <p class="form-msg" id="review-msg"></p>
@@ -239,6 +240,18 @@
     <div class="modal wide">
         <button class="modal-close" onclick="closeModal('mypage-modal')">✕</button>
         <h2>마이페이지</h2>
+
+        <!-- 닉네임 표시 / 수정 -->
+        <div class="mypage-profile" id="mypage-profile-view">
+            <span>닉네임: <strong id="mypage-nickname-text"></strong></span>
+            <button class="nickname-edit-btn" onclick="editNickname()">수정</button>
+        </div>
+        <div class="mypage-profile" id="mypage-profile-edit" style="display:none;">
+            <input type="text" id="mypage-nickname-input" placeholder="새 닉네임">
+            <button class="nickname-edit-btn" onclick="saveNickname()">저장</button>
+            <button class="nickname-edit-btn" onclick="cancelEditNickname()">취소</button>
+        </div>
+
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('fav-tab', this)">❤️ 즐겨찾기</button>
             <button class="tab-btn" onclick="switchTab('review-tab', this)">💬 내 리뷰</button>

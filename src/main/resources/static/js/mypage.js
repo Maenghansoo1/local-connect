@@ -4,9 +4,49 @@ function openMypage() {
     document.getElementById('fav-tab').style.display = 'block';
     document.getElementById('review-tab').style.display = 'none';
     document.getElementById('visit-tab').style.display = 'none';
+    loadProfile();
     loadFavorites();
     loadMyReviews();
     loadVisitHistory();
+}
+
+function loadProfile() {
+    fetch('/api/auth/me').then(r => r.json()).then(d => {
+        document.getElementById('mypage-nickname-text').textContent = d.nickname;
+        document.getElementById('mypage-nickname-input').value = d.nickname;
+    });
+}
+
+function editNickname() {
+    document.getElementById('mypage-profile-view').style.display = 'none';
+    document.getElementById('mypage-profile-edit').style.display = 'flex';
+}
+
+function cancelEditNickname() {
+    document.getElementById('mypage-profile-view').style.display = 'flex';
+    document.getElementById('mypage-profile-edit').style.display = 'none';
+}
+
+function saveNickname() {
+    const nickname = document.getElementById('mypage-nickname-input').value.trim();
+    if (!nickname) {
+        alert('닉네임을 입력해주세요.');
+        return;
+    }
+    fetch('/api/auth/nickname', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname })
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.nickname) {
+            document.getElementById('mypage-nickname-text').textContent = d.nickname;
+            cancelEditNickname();
+        } else {
+            alert(d.message || '닉네임 변경에 실패했습니다.');
+        }
+    });
 }
 
 function switchTab(tabId, btnEl) {
@@ -60,6 +100,12 @@ function loadVisitHistory() {
                     <p>${v.addr || '주소 없음'}</p>
                     <p style="color:#aaa;font-size:11px;">${v.visitedAt?.substring(0, 10)}</p>
                 </div>
+                <button class="my-card-del" onclick="deleteVisitHistory(${v.id}, this.closest('.my-card'))">×</button>
             </div>`).join('');
     });
+}
+
+function deleteVisitHistory(id, el) {
+    if (!confirm('방문 기록을 삭제할까요?')) return;
+    fetch(`/api/visits/${id}`, { method: 'DELETE' }).then(() => el.remove());
 }

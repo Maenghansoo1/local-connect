@@ -18,4 +18,7 @@ public interface UserRepository {
             "VALUES (#{username}, #{password}, #{nickname}, #{email}, #{provider}, #{providerId}, #{createdAt})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
+
+    @Update("UPDATE users SET nickname = #{nickname} WHERE username = #{username}")
+    void updateNickname(@Param("username") String username, @Param("nickname") String nickname);
 }
